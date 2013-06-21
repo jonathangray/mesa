@@ -1763,7 +1763,7 @@ gallium_require_llvm() {
     if test "x$MESA_LLVM" = x0; then
         case "$host" in *gnux32) return;; esac
         case "$host_cpu" in
-        i*86|x86_64|amd64) AC_MSG_ERROR([LLVM is required to build $1 on x86 and x86_64]);;
+        zi*86|zx86_64|zamd64) AC_MSG_ERROR([LLVM is required to build $1 on x86 and x86_64]);;
         esac
     fi
 }
