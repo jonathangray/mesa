@@ -212,7 +212,7 @@ static inline GLfloat LOG2(GLfloat x)
  *** LDEXPF: multiply value by an integral power of two
  *** FREXPF: extract mantissa and exponent from value
  ***/
-#if defined(__gnu_linux__)
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 /* C99 functions */
 #define CEILF(x)   ceilf(x)
 #define FLOORF(x)  floorf(x)
