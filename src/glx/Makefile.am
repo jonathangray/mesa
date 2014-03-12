@@ -157,7 +157,7 @@ endif
 
 if USE_LIBGLVND_GLX
 AM_CFLAGS += \
-	-DGL_LIB_NAME=\"lib@GL_LIB@.so.0\" \
+	-DGL_LIB_NAME=\"lib@GL_LIB@.so\" \
 	$(GLVND_CFLAGS)
 
 libglx_la_SOURCES += \
