@@ -52,13 +52,13 @@
 #include <llvm/MC/MCInstPrinter.h>
 #include <llvm/MC/MCRegisterInfo.h>
 
-#if HAVE_LLVM >= 0x0305
+#if HAVE_LLVM >= 0x0305 && !defined(__OpenBSD__)
 #define OwningPtr std::unique_ptr
 #else
 #include <llvm/ADT/OwningPtr.h>
 #endif
 
-#if HAVE_LLVM >= 0x0305
+#if HAVE_LLVM >= 0x0305 && !defined(__OpenBSD__)
 #include <llvm/MC/MCContext.h>
 #endif
 
@@ -241,7 +241,7 @@ disassemble(const void* func, llvm::raw_ostream & Out)
       return 0;
    }
 
-#if HAVE_LLVM >= 0x0305
+#if HAVE_LLVM >= 0x0305 && !defined(__OpenBSD__)
    OwningPtr<const MCSubtargetInfo> STI(T->createMCSubtargetInfo(Triple, sys::getHostCPUName(), ""));
    OwningPtr<MCContext> MCCtx(new MCContext(AsmInfo.get(), MRI.get(), 0));
    OwningPtr<const MCDisassembler> DisAsm(T->createMCDisassembler(*STI, *MCCtx));
