@@ -200,7 +200,27 @@ The integer capabilities:
 * ``PIPE_CAP_SAMPLE_SHADING``: Whether there is support for per-sample
   shading. The context->set_min_samples function will be expected to be
   implemented.
-
+* ``PIPE_CAP_TEXTURE_GATHER_OFFSETS``: Whether the ``TG4`` instruction can
+  accept 4 offsets.
+* ``PIPE_CAP_TGSI_VS_WINDOW_SPACE_POSITION``: Whether
+  TGSI_PROPERTY_VS_WINDOW_SPACE_POSITION is supported, which disables clipping
+  and viewport transformation.
+* ``PIPE_CAP_MAX_VERTEX_STREAMS``: The maximum number of vertex streams
+  supported by the geometry shader. If stream-out is supported, this should be
+  at least 1. If stream-out is not supported, this should be 0.
+* ``PIPE_CAP_DRAW_INDIRECT``: Whether the driver supports taking draw arguments
+  { count, instance_count, start, index_bias } from a PIPE_BUFFER resource.
+  See pipe_draw_info.
+* ``PIPE_CAP_TGSI_FS_FINE_DERIVATIVE``: Whether the fragment shader supports
+  the FINE versions of DDX/DDY.
+* ``PIPE_CAP_VENDOR_ID``: The vendor ID of the underlying hardware. If it's
+  not available one should return 0xFFFFFFFF.
+* ``PIPE_CAP_DEVICE_ID``: The device ID (PCI ID) of the underlying hardware.
+  0xFFFFFFFF if not available.
+* ``PIPE_CAP_ACCELERATED``: Whether the renderer is hardware accelerated.
+* ``PIPE_CAP_VIDEO_MEMORY``: The amount of video memory in megabytes.
+* ``PIPE_CAP_UMA``: If the device has a unified memory architecture or on-card
+  memory and GART.
 
 .. _pipe_capf:
 
