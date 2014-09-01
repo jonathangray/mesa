@@ -37,8 +37,12 @@ r600_dri_la_SOURCES = \
 	drm_target.c
 
 r600_dri_la_LDFLAGS = \
-	$(GALLIUM_DRI_LINKER_FLAGS) \
+	$(GALLIUM_DRI_LINKER_FLAGS)
+
+if HAVE_LD_DYNAMIC_LIST
+r600_dri_la_LDFLAGS += \
 	-Wl,--dynamic-list=$(srcdir)/../../r300/dri/radeon.dyn
+endif # HAVE_LD_DYNAMIC_LIST
 
 r600_dri_la_LIBADD = \
 	$(top_builddir)/src/mesa/drivers/dri/common/libdricommon.la \

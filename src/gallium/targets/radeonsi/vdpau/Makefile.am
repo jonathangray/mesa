@@ -34,9 +34,12 @@ libvdpau_radeonsi_la_SOURCES = \
 	$(top_srcdir)/src/gallium/auxiliary/vl/vl_winsys_dri.c
 
 libvdpau_radeonsi_la_LDFLAGS = \
-	$(GALLIUM_VDPAU_LINKER_FLAGS) \
-	-Wl,--dynamic-list=$(srcdir)/../../r300/dri/radeon.dyn
+	$(GALLIUM_VDPAU_LINKER_FLAGS)
 
+if HAVE_LD_DYNAMIC_LIST
+libvdpau_radeonsi_la_LDFLAGS += \
+	-Wl,--dynamic-list=$(srcdir)/../../r300/dri/radeon.dyn
+endif # HAVE_LD_DYNAMIC_LIST
 
 libvdpau_radeonsi_la_LIBADD = \
 	$(top_builddir)/src/gallium/drivers/radeonsi/libradeonsi.la \

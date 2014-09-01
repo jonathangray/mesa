@@ -34,8 +34,12 @@ libvdpau_r600_la_SOURCES = \
 	$(top_srcdir)/src/gallium/auxiliary/vl/vl_winsys_dri.c
 
 libvdpau_r600_la_LDFLAGS = \
-	$(GALLIUM_VDPAU_LINKER_FLAGS) \
+	$(GALLIUM_VDPAU_LINKER_FLAGS)
+
+if HAVE_LD_DYNAMIC_LIST
+libvdpau_r600_la_LDFLAGS += \
 	-Wl,--dynamic-list=$(srcdir)/../../r300/dri/radeon.dyn
+endif # HAVE_LD_DYNAMIC_LIST
 
 libvdpau_r600_la_LIBADD = \
 	$(top_builddir)/src/gallium/drivers/r600/libr600.la \
