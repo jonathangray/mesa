@@ -40,7 +40,7 @@ libEGL_la_LIBADD = \
 	$(EGL_LIB_DEPS)
 libEGL_la_LDFLAGS = \
 	-no-undefined \
-	-version-number 1:0 \
+	-version-number 0:0 \
 	$(BSYMBOLIC) \
 	$(GC_SECTIONS) \
 	$(LD_NO_UNDEFINED)
