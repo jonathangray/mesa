@@ -168,8 +168,8 @@ libglx_la_SOURCES += \
 GL_LIB_VERSION=0
 else
 AM_CFLAGS += \
-	-DGL_LIB_NAME=\"lib@GL_LIB@.so.1\"
-GL_LIB_VERSION=1:2
+	-DGL_LIB_NAME=\"lib@GL_LIB@.so\"
+GL_LIB_VERSION=17:1
 endif
 
 # Push the libdrm furhter up, as due to libtool bug we might end up relinking
