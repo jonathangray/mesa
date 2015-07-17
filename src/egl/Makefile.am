@@ -172,7 +172,7 @@ libEGL_la_SOURCES =
 libEGL_la_LIBADD = libEGL_common.la
 libEGL_la_LDFLAGS = \
 	-no-undefined \
-	-version-number 1:0 \
+	-version-number 1:1 \
 	$(BSYMBOLIC) \
 	$(GC_SECTIONS) \
 	$(LD_NO_UNDEFINED)
