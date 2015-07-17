@@ -48,6 +48,7 @@ intel_batchbuffer_init(struct brw_context *brw)
    if (!brw->has_llc) {
       brw->batch.cpu_map = malloc(BATCH_SZ);
       brw->batch.map = brw->batch.cpu_map;
+      brw->batch.map_next = brw->batch.cpu_map;
    }
 }
 
@@ -68,10 +69,10 @@ intel_batchbuffer_reset(struct brw_context *brw)
       drm_intel_bo_map(brw->batch.bo, true);
       brw->batch.map = brw->batch.bo->virtual;
    }
+   brw->batch.map_next = brw->batch.map;
 
    brw->batch.reserved_space = BATCH_RESERVED;
    brw->batch.state_batch_offset = brw->batch.bo->size;
-   brw->batch.used = 0;
    brw->batch.needs_sol_reset = false;
 
    /* We don't know what ring the new batch will be sent to until we see the
@@ -83,7 +84,7 @@ intel_batchbuffer_reset(struct brw_context *brw)
 void
 intel_batchbuffer_save_state(struct brw_context *brw)
 {
-   brw->batch.saved.used = brw->batch.used;
+   brw->batch.saved.map_next = brw->batch.map_next;
    brw->batch.saved.reloc_count =
       drm_intel_gem_bo_get_reloc_count(brw->batch.bo);
 }
@@ -93,8 +94,8 @@ intel_batchbuffer_reset_to_saved(struct brw_context *brw)
 {
    drm_intel_gem_bo_clear_relocs(brw->batch.bo, brw->batch.saved.reloc_count);
 
-   brw->batch.used = brw->batch.saved.used;
-   if (brw->batch.used == 0)
+   brw->batch.map_next = brw->batch.saved.map_next;
+   if (USED_BATCH(brw->batch) == 0)
       brw->batch.ring = UNKNOWN_RING;
 }
 
@@ -122,7 +123,7 @@ do_batch_dump(struct brw_context *brw)
       drm_intel_decode_set_batch_pointer(decode,
 					 batch->bo->virtual,
 					 batch->bo->offset64,
-					 batch->used);
+                                         USED_BATCH(*batch));
    } else {
       fprintf(stderr,
 	      "WARNING: failed to map batchbuffer (%s), "
@@ -131,7 +132,7 @@ do_batch_dump(struct brw_context *brw)
       drm_intel_decode_set_batch_pointer(decode,
 					 batch->map,
 					 batch->bo->offset64,
-					 batch->used);
+                                         USED_BATCH(*batch));
    }
 
    drm_intel_decode_set_output_file(decode, stderr);
@@ -289,7 +290,7 @@ do_flush_locked(struct brw_context *brw)
    if (brw->has_llc) {
       drm_intel_bo_unmap(batch->bo);
    } else {
-      ret = drm_intel_bo_subdata(batch->bo, 0, 4*batch->used, batch->map);
+      ret = drm_intel_bo_subdata(batch->bo, 0, 4 * USED_BATCH(*batch), batch->map);
       if (ret == 0 && batch->state_batch_offset != batch->bo->size) {
 	 ret = drm_intel_bo_subdata(batch->bo,
 				    batch->state_batch_offset,
@@ -314,11 +315,11 @@ do_flush_locked(struct brw_context *brw)
             brw_annotate_aub(brw);
 
 	 if (brw->hw_ctx == NULL || batch->ring != RENDER_RING) {
-	    ret = drm_intel_bo_mrb_exec(batch->bo, 4 * batch->used, NULL, 0, 0,
-					flags);
+            ret = drm_intel_bo_mrb_exec(batch->bo, 4 * USED_BATCH(*batch),
+                                        NULL, 0, 0, flags);
 	 } else {
 	    ret = drm_intel_gem_bo_context_exec(batch->bo, brw->hw_ctx,
-						4 * batch->used, flags);
+                                                4 * USED_BATCH(*batch), flags);
 	 }
       }
 
@@ -342,7 +343,7 @@ _intel_batchbuffer_flush(struct brw_context *brw,
 {
    int ret;
 
-   if (brw->batch.used == 0)
+   if (USED_BATCH(brw->batch) == 0)
       return 0;
 
    if (brw->throttle_batch[0] == NULL) {
@@ -351,7 +352,7 @@ _intel_batchbuffer_flush(struct brw_context *brw,
    }
 
    if (unlikely(INTEL_DEBUG & DEBUG_BATCH)) {
-      int bytes_for_commands = 4 * brw->batch.used;
+      int bytes_for_commands = 4 * USED_BATCH(brw->batch);
       int bytes_for_state = brw->batch.bo->size - brw->batch.state_batch_offset;
       int total_bytes = bytes_for_commands + bytes_for_state;
       fprintf(stderr, "%s:%d: Batchbuffer flush with %4db (pkt) + "
@@ -367,7 +368,7 @@ _intel_batchbuffer_flush(struct brw_context *brw,
 
    /* Mark the end of the buffer. */
    intel_batchbuffer_emit_dword(brw, MI_BATCH_BUFFER_END);
-   if (brw->batch.used & 1) {
+   if (USED_BATCH(brw->batch) & 1) {
       /* Round batchbuffer usage to 2 DWORDs. */
       intel_batchbuffer_emit_dword(brw, MI_NOOP);
    }
@@ -393,15 +394,15 @@ _intel_batchbuffer_flush(struct brw_context *brw,
 
 /*  This is the only way buffers get added to the validate list.
  */
-bool
-intel_batchbuffer_emit_reloc(struct brw_context *brw,
-                             drm_intel_bo *buffer,
-                             uint32_t read_domains, uint32_t write_domain,
-			     uint32_t delta)
+uint32_t
+intel_batchbuffer_reloc(struct brw_context *brw,
+                        drm_intel_bo *buffer, uint32_t offset,
+                        uint32_t read_domains, uint32_t write_domain,
+                        uint32_t delta)
 {
    int ret;
 
-   ret = drm_intel_bo_emit_reloc(brw->batch.bo, 4*brw->batch.used,
+   ret = drm_intel_bo_emit_reloc(brw->batch.bo, offset,
 				 buffer, delta,
 				 read_domains, write_domain);
    assert(ret == 0);
@@ -411,18 +412,16 @@ intel_batchbuffer_emit_reloc(struct brw_context *brw,
     * case the buffer doesn't move and we can short-circuit the relocation
     * processing in the kernel
     */
-   intel_batchbuffer_emit_dword(brw, buffer->offset64 + delta);
-
-   return true;
+   return buffer->offset64 + delta;
 }
 
-bool
-intel_batchbuffer_emit_reloc64(struct brw_context *brw,
-                               drm_intel_bo *buffer,
-                               uint32_t read_domains, uint32_t write_domain,
-			       uint32_t delta)
+uint64_t
+intel_batchbuffer_reloc64(struct brw_context *brw,
+                          drm_intel_bo *buffer, uint32_t offset,
+                          uint32_t read_domains, uint32_t write_domain,
+                          uint32_t delta)
 {
-   int ret = drm_intel_bo_emit_reloc(brw->batch.bo, 4*brw->batch.used,
+   int ret = drm_intel_bo_emit_reloc(brw->batch.bo, offset,
                                      buffer, delta,
                                      read_domains, write_domain);
    assert(ret == 0);
@@ -432,11 +431,7 @@ intel_batchbuffer_emit_reloc64(struct brw_context *brw,
     * case the buffer doesn't move and we can short-circuit the relocation
     * processing in the kernel
     */
-   uint64_t offset = buffer->offset64 + delta;
-   intel_batchbuffer_emit_dword(brw, offset);
-   intel_batchbuffer_emit_dword(brw, offset >> 32);
-
-   return true;
+   return buffer->offset64 + delta;
 }
 
 
@@ -446,8 +441,8 @@ intel_batchbuffer_data(struct brw_context *brw,
 {
    assert((bytes & 3) == 0);
    intel_batchbuffer_require_space(brw, bytes, ring);
-   memcpy(brw->batch.map + brw->batch.used, data, bytes);
-   brw->batch.used += bytes >> 2;
+   memcpy(brw->batch.map_next, data, bytes);
+   brw->batch.map_next += bytes >> 2;
 }
 
 static void

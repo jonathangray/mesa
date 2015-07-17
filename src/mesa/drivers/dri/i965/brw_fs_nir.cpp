@@ -835,29 +835,11 @@ fs_visitor::nir_emit_alu(const fs_builder &bld, nir_alu_instr *instr)
       bld.emit(SHADER_OPCODE_INT_QUOTIENT, result, op[0], op[1]);
       break;
 
-   case nir_op_uadd_carry: {
-      if (devinfo->gen >= 7)
-         no16("SIMD16 explicit accumulator operands unsupported\n");
+   case nir_op_uadd_carry:
+      unreachable("Should have been lowered by carry_to_arith().");
 
-      struct brw_reg acc = retype(brw_acc_reg(dispatch_width),
-                                  BRW_REGISTER_TYPE_UD);
-
-      bld.ADDC(bld.null_reg_ud(), op[0], op[1]);
-      bld.MOV(result, fs_reg(acc));
-      break;
-   }
-
-   case nir_op_usub_borrow: {
-      if (devinfo->gen >= 7)
-         no16("SIMD16 explicit accumulator operands unsupported\n");
-
-      struct brw_reg acc = retype(brw_acc_reg(dispatch_width),
-                                  BRW_REGISTER_TYPE_UD);
-
-      bld.SUBB(bld.null_reg_ud(), op[0], op[1]);
-      bld.MOV(result, fs_reg(acc));
-      break;
-   }
+   case nir_op_usub_borrow:
+      unreachable("Should have been lowered by borrow_to_arith().");
 
    case nir_op_umod:
       bld.emit(SHADER_OPCODE_INT_REMAINDER, result, op[0], op[1]);
@@ -968,10 +950,8 @@ fs_visitor::nir_emit_alu(const fs_builder &bld, nir_alu_instr *instr)
       break;
 
    case nir_op_b2i:
-      bld.AND(result, op[0], fs_reg(1));
-      break;
    case nir_op_b2f:
-      bld.AND(retype(result, BRW_REGISTER_TYPE_UD), op[0], fs_reg(0x3f800000u));
+      bld.MOV(result, negate(op[0]));
       break;
 
    case nir_op_f2b:

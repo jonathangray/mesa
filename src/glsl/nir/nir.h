@@ -443,6 +443,18 @@ nir_instr_prev(nir_instr *instr)
       return exec_node_data(nir_instr, prev, node);
 }
 
+static inline bool
+nir_instr_is_first(nir_instr *instr)
+{
+   return exec_node_is_head_sentinel(exec_node_get_prev(&instr->node));
+}
+
+static inline bool
+nir_instr_is_last(nir_instr *instr)
+{
+   return exec_node_is_tail_sentinel(exec_node_get_next(&instr->node));
+}
+
 typedef struct {
    /** for debugging only, can be NULL */
    const char* name;
@@ -1221,6 +1233,8 @@ nir_block_last_instr(nir_block *block)
    foreach_list_typed_reverse(nir_instr, instr, node, &(block)->instr_list)
 #define nir_foreach_instr_safe(block, instr) \
    foreach_list_typed_safe(nir_instr, instr, node, &(block)->instr_list)
+#define nir_foreach_instr_safe_reverse(block, instr) \
+   foreach_list_typed_safe_reverse(nir_instr, instr, node, &(block)->instr_list)
 
 typedef struct nir_if {
    nir_cf_node cf_node;

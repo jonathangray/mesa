@@ -78,8 +78,8 @@ fs_inst::init(enum opcode opcode, uint8_t exec_size, const fs_reg &dst,
    case HW_REG:
    case MRF:
    case ATTR:
-      this->regs_written =
-         DIV_ROUND_UP(MAX2(exec_size * dst.stride, 1) * type_sz(dst.type), 32);
+      this->regs_written = DIV_ROUND_UP(dst.component_size(exec_size),
+                                        REG_SIZE);
       break;
    case BAD_FILE:
       this->regs_written = 0;
@@ -443,6 +443,15 @@ fs_reg::is_contiguous() const
    return stride == 1;
 }
 
+unsigned
+fs_reg::component_size(unsigned width) const
+{
+   const unsigned stride = (file != HW_REG ? this->stride :
+                            fixed_hw_reg.hstride == 0 ? 0 :
+                            1 << (fixed_hw_reg.hstride - 1));
+   return MAX2(width * stride, 1) * type_sz(type);
+}
+
 int
 fs_visitor::type_size(const struct glsl_type *type)
 {
@@ -676,7 +685,8 @@ fs_inst::regs_read(int arg) const
    case FS_OPCODE_LINTERP:
       if (arg == 0)
          return exec_size / 4;
-      break;
+      else
+         return 1;
 
    case FS_OPCODE_PIXEL_X:
    case FS_OPCODE_PIXEL_Y:
@@ -688,6 +698,9 @@ fs_inst::regs_read(int arg) const
       if (arg < this->header_size)
          return 1;
       break;
+
+   case CS_OPCODE_CS_TERMINATE:
+      return 1;
 
    default:
       if (is_tex() && arg == 0 && src[0].file == GRF)
@@ -702,12 +715,8 @@ fs_inst::regs_read(int arg) const
       return 1;
    case GRF:
    case HW_REG:
-      if (src[arg].stride == 0) {
-         return 1;
-      } else {
-         int size = components * this->exec_size * type_sz(src[arg].type);
-         return DIV_ROUND_UP(size * src[arg].stride, 32);
-      }
+      return DIV_ROUND_UP(components * src[arg].component_size(exec_size),
+                          REG_SIZE);
    case MRF:
       unreachable("MRF registers are not allowed as sources");
    default:

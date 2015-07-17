@@ -57,16 +57,21 @@ void intel_batchbuffer_data(struct brw_context *brw,
                             const void *data, GLuint bytes,
                             enum brw_gpu_ring ring);
 
-bool intel_batchbuffer_emit_reloc(struct brw_context *brw,
-                                       drm_intel_bo *buffer,
-				       uint32_t read_domains,
-				       uint32_t write_domain,
-				       uint32_t offset);
-bool intel_batchbuffer_emit_reloc64(struct brw_context *brw,
-                                    drm_intel_bo *buffer,
-                                    uint32_t read_domains,
-                                    uint32_t write_domain,
-                                    uint32_t offset);
+uint32_t intel_batchbuffer_reloc(struct brw_context *brw,
+                                 drm_intel_bo *buffer,
+                                 uint32_t offset,
+                                 uint32_t read_domains,
+                                 uint32_t write_domain,
+                                 uint32_t delta);
+uint64_t intel_batchbuffer_reloc64(struct brw_context *brw,
+                                   drm_intel_bo *buffer,
+                                   uint32_t offset,
+                                   uint32_t read_domains,
+                                   uint32_t write_domain,
+                                   uint32_t delta);
+
+#define USED_BATCH(batch) ((uintptr_t)((batch).map_next - (batch).map))
+
 static inline uint32_t float_as_int(float f)
 {
    union {
@@ -87,7 +92,7 @@ static inline unsigned
 intel_batchbuffer_space(struct brw_context *brw)
 {
    return (brw->batch.state_batch_offset - brw->batch.reserved_space)
-      - brw->batch.used*4;
+      - USED_BATCH(brw->batch) * 4;
 }
 
 
@@ -97,7 +102,7 @@ intel_batchbuffer_emit_dword(struct brw_context *brw, GLuint dword)
 #ifdef DEBUG
    assert(intel_batchbuffer_space(brw) >= 4);
 #endif
-   brw->batch.map[brw->batch.used++] = dword;
+   *brw->batch.map_next++ = dword;
    assert(brw->batch.ring != UNKNOWN_RING);
 }
 
@@ -139,7 +144,7 @@ intel_batchbuffer_begin(struct brw_context *brw, int n, enum brw_gpu_ring ring)
    intel_batchbuffer_require_space(brw, n * 4, ring);
 
 #ifdef DEBUG
-   brw->batch.emit = brw->batch.used;
+   brw->batch.emit = USED_BATCH(brw->batch);
    brw->batch.total = n;
 #endif
 }
@@ -149,7 +154,7 @@ intel_batchbuffer_advance(struct brw_context *brw)
 {
 #ifdef DEBUG
    struct intel_batchbuffer *batch = &brw->batch;
-   unsigned int _n = batch->used - batch->emit;
+   unsigned int _n = USED_BATCH(*batch) - batch->emit;
    assert(batch->total != 0);
    if (_n != batch->total) {
       fprintf(stderr, "ADVANCE_BATCH: %d of %d dwords emitted\n",
@@ -160,21 +165,42 @@ intel_batchbuffer_advance(struct brw_context *brw)
 #endif
 }
 
-#define BEGIN_BATCH(n) intel_batchbuffer_begin(brw, n, RENDER_RING)
-#define BEGIN_BATCH_BLT(n) intel_batchbuffer_begin(brw, n, BLT_RING)
-#define OUT_BATCH(d) intel_batchbuffer_emit_dword(brw, d)
-#define OUT_BATCH_F(f) intel_batchbuffer_emit_float(brw, f)
-#define OUT_RELOC(buf, read_domains, write_domain, delta) do {		\
-   intel_batchbuffer_emit_reloc(brw, buf,			\
-				read_domains, write_domain, delta);	\
+#define BEGIN_BATCH(n) do {                            \
+   intel_batchbuffer_begin(brw, (n), RENDER_RING);     \
+   uint32_t *__map = brw->batch.map_next;              \
+   brw->batch.map_next += (n)
+
+#define BEGIN_BATCH_BLT(n) do {                        \
+   intel_batchbuffer_begin(brw, (n), BLT_RING);        \
+   uint32_t *__map = brw->batch.map_next;              \
+   brw->batch.map_next += (n)
+
+#define OUT_BATCH(d) *__map++ = (d)
+#define OUT_BATCH_F(f) OUT_BATCH(float_as_int((f)))
+
+#define OUT_RELOC(buf, read_domains, write_domain, delta) do { \
+   uint32_t __offset = (__map - brw->batch.map) * 4;           \
+   OUT_BATCH(intel_batchbuffer_reloc(brw, (buf), __offset,     \
+                                     (read_domains),           \
+                                     (write_domain),           \
+                                     (delta)));                \
 } while (0)
 
 /* Handle 48-bit address relocations for Gen8+ */
-#define OUT_RELOC64(buf, read_domains, write_domain, delta) do { \
-   intel_batchbuffer_emit_reloc64(brw, buf, read_domains, write_domain, delta);	\
+#define OUT_RELOC64(buf, read_domains, write_domain, delta) do {      \
+   uint32_t __offset = (__map - brw->batch.map) * 4;                  \
+   uint64_t reloc64 = intel_batchbuffer_reloc64(brw, (buf), __offset, \
+                                                (read_domains),       \
+                                                (write_domain),       \
+                                                (delta));             \
+   OUT_BATCH(reloc64);                                                \
+   OUT_BATCH(reloc64 >> 32);                                          \
 } while (0)
 
-#define ADVANCE_BATCH() intel_batchbuffer_advance(brw);
+#define ADVANCE_BATCH()                  \
+   assert(__map == brw->batch.map_next); \
+   intel_batchbuffer_advance(brw);       \
+} while (0)
 
 #ifdef __cplusplus
 }
