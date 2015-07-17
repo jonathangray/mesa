@@ -197,7 +197,7 @@ libEGL@EGL_LIB_SUFFIX@_la_LIBADD = \
 	$(top_builddir)/src/mapi/shared-glapi/libglapi.la
 libEGL@EGL_LIB_SUFFIX@_la_LDFLAGS = \
 	-no-undefined \
-	-version-number 1:0 \
+	-version-number 1:1 \
 	$(BSYMBOLIC) \
 	$(GC_SECTIONS) \
 	$(LD_NO_UNDEFINED)
