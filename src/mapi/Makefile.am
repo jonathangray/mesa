@@ -78,6 +78,7 @@ shared_glapi_libglapi_la_LIBADD = \
 	$(SELINUX_LIBS)
 shared_glapi_libglapi_la_LDFLAGS = \
 	-no-undefined \
+	-version-number 0:2 \
 	$(GC_SECTIONS) \
 	$(LD_NO_UNDEFINED)
 
@@ -184,7 +185,7 @@ es1api_libGLESv1_CM_la_CPPFLAGS = \
 es1api_libGLESv1_CM_la_LIBADD = $(GLESv1_CM_LIB_DEPS)
 es1api_libGLESv1_CM_la_LDFLAGS = \
 	-no-undefined \
-	-version-number 1:1 \
+	-version-number 1:0 \
 	$(GC_SECTIONS) \
 	$(LD_NO_UNDEFINED)
 
@@ -229,7 +230,7 @@ es2api_libGLESv2_la_CPPFLAGS = \
 es2api_libGLESv2_la_LIBADD = $(GLESv2_LIB_DEPS)
 es2api_libGLESv2_la_LDFLAGS = \
 	-no-undefined \
-	-version-number 2 \
+	-version-number 1:2 \
 	$(GC_SECTIONS) \
 	$(LD_NO_UNDEFINED)
 
