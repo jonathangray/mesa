@@ -58,4 +58,4 @@ noinst_HEADERS = \
 # We list some directories in EXTRA_DIST, but don't actually want to include
 # the .gitignore files in the tarball.
 dist-hook:
-	find $(distdir) -name .gitignore -exec $(RM) {} +
+	find $(distdir) -name .gitignore -exec rm -f {} +

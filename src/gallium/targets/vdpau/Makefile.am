@@ -97,7 +97,7 @@ all-local: $(vdpau_LTLIBRARIES)
 clean-local:
 	$(AM_V_GEN)link_dir=$(top_builddir)/$(LIB_DIR)/gallium;		\
 	$(AM_V_GEN)for i in $(TARGET_DRIVERS); do			\
-		$(RM) $${link_dir}/libvdpau_$${i}.so{,.$(VDPAU_MAJOR){,.$(VDPAU_MINOR){,.0}}}; \
+		rm -f $${link_dir}/libvdpau_$${i}.so{,.$(VDPAU_MAJOR){,.$(VDPAU_MINOR){,.0}}}; \
 	done;
 endif
 
@@ -118,9 +118,9 @@ install-data-hook:
 		ln -sf $${l}						\
 		       $${dest_dir}/$${k};				\
 	done;								\
-	$(RM) $${dest_dir}/libvdpau_gallium.*
+	rm -f $${dest_dir}/libvdpau_gallium.*
 
 uninstall-hook:
 	for i in $(TARGET_DRIVERS); do					\
-		$(RM) $(DESTDIR)$(vdpaudir)/libvdpau_$${i}.so{,.$(VDPAU_MAJOR){,.$(VDPAU_MINOR){,.0}}}; \
+		rm -f $(DESTDIR)$(vdpaudir)/libvdpau_$${i}.so{,.$(VDPAU_MAJOR){,.$(VDPAU_MINOR){,.0}}}; \
 	done;

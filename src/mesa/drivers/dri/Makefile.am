@@ -79,9 +79,9 @@ all-local: mesa_dri_drivers.la
 	done;
 
 clean-local:
-	$(AM_V_GEN)$(RM) $(top_builddir)/$(LIB_DIR)/mesa_dri_drivers.so;
+	$(AM_V_GEN)rm -f $(top_builddir)/$(LIB_DIR)/mesa_dri_drivers.so;
 	$(AM_V_GEN)for i in $(MEGADRIVERS); do \
-		$(RM) $(top_builddir)/$(LIB_DIR)/$$i; \
+		rm -f $(top_builddir)/$(LIB_DIR)/$$i; \
 	done;
 endif
 
@@ -92,11 +92,11 @@ install-data-hook:
 		ln -f $(DESTDIR)$(dridir)/mesa_dri_drivers.so \
 		      $(DESTDIR)$(dridir)/$$i; \
 	done;
-	$(RM) $(DESTDIR)$(dridir)/mesa_dri_drivers.*
+	rm -f $(DESTDIR)$(dridir)/mesa_dri_drivers.*
 
 uninstall-hook:
 	for i in $(MEGADRIVERS); do \
-		$(RM) $(DESTDIR)$(dridir)/$$i; \
+		rm -f $(DESTDIR)$(dridir)/$$i; \
 	done;
 
 endif

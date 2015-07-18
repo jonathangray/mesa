@@ -80,9 +80,9 @@ install-data-hook:
 		ln -sf $${l}						\
 		       $${dest_dir}/$${k};				\
 	done;								\
-	$(RM) $${dest_dir}/libXvMCgallium.*
+	rm -f $${dest_dir}/libXvMCgallium.*
 
 uninstall-hook:
 	for i in $(TARGET_DRIVERS); do					\
-		$(RM) $(DESTDIR)$(xvmcdir)/libXvMC$${i}.so{,.$(XVMC_MAJOR){,.$(XVMC_MINOR){,.0}}}; \
+		rm -f $(DESTDIR)$(xvmcdir)/libXvMC$${i}.so{,.$(XVMC_MAJOR){,.$(XVMC_MINOR){,.0}}}; \
 	done;

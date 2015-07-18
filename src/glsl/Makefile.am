@@ -223,11 +223,11 @@ CLEANFILES =						\
 	$(BUILT_SOURCES)
 
 clean-local:
-	$(RM) -r subtest-cr subtest-cr-lf subtest-lf subtest-lf-cr
+	rm -f -r subtest-cr subtest-cr-lf subtest-lf subtest-lf-cr
 
 dist-hook:
-	$(RM) glcpp/tests/*.out
-	$(RM) glcpp/tests/subtest*/*.out
+	rm -f glcpp/tests/*.out
+	rm -f glcpp/tests/subtest*/*.out
 
 PYTHON_GEN = $(AM_V_GEN)$(PYTHON2) $(PYTHON_FLAGS)
 
