@@ -50,4 +50,4 @@ libxmlconfig_la_LIBADD = $(EXPAT_LIBS) -lm
 
 libmegadriver_stub_la_SOURCES = $(megadriver_stub_FILES)
 
-sysconf_DATA = drirc
+sysconf_DATA =
