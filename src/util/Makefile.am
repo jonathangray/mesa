@@ -75,7 +75,7 @@ libxmlconfig_la_CFLAGS = \
 libxmlconfig_la_LIBADD = $(EXPAT_LIBS) -lm
 
 drircdir = $(datadir)/drirc.d
-drirc_DATA = 00-mesa-defaults.conf
+drirc_DATA = 
 
 u_atomic_test_LDADD = libmesautil.la
 roundeven_test_LDADD = -lm
