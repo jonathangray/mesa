@@ -66,7 +66,7 @@ libxmlconfig_la_CFLAGS = \
 	$(EXPAT_CFLAGS)
 libxmlconfig_la_LIBADD = $(EXPAT_LIBS) -lm
 
-sysconf_DATA = drirc
+sysconf_DATA =
 
 u_atomic_test_LDADD = libmesautil.la
 roundeven_test_LDADD = -lm
