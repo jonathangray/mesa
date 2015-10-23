@@ -1,0 +1,66 @@
+# $OpenBSD: Makefile.bsd-wrapper,v 1.6 2016/05/29 10:40:19 jsg Exp $
+
+.include <bsd.own.mk>
+
+SHARED_LIBS=	EGL 1.0 gbm 0.0 glapi 0.2 GL 17.0 GLESv1_CM 1.0 GLESv2 1.1 \
+		OSMesa 10.0
+
+DRI_DRIVERS=		swrast
+GALLIUM_DRIVERS=	swrast
+
+.if ${MACHINE} == i386 || ${MACHINE} == amd64
+DRI_DRIVERS=swrast,radeon,r200,i915,i965
+GALLIUM_DRIVERS=swrast,r300,r600
+.endif
+
+.if ${MACHINE} == macppc || ${MACHINE} == sparc64
+DRI_DRIVERS=swrast,radeon,r200
+GALLIUM_DRIVERS=swrast,r300,r600
+.endif
+
+CONFIGURE_ARGS=		--with-dri-drivers=${DRI_DRIVERS} \
+			--with-gallium-drivers=${GALLIUM_DRIVERS} \
+			--disable-silent-rules \
+			--disable-gallium-llvm \
+			--disable-llvm-shared-libs \
+			--enable-gles1 --enable-gles2 \
+			--enable-shared-glapi \
+			--enable-osmesa \
+			--enable-gbm \
+			--enable-texture-float \
+			--with-egl-platforms="x11,drm" \
+			--prefix=${X11BASE} \
+			--with-dri-driverdir=${X11BASE}/lib/modules/dri \
+			--with-dri-searchpath=${X11BASE}/lib/modules/dri
+
+# The i965 driver uses the cmpxchg8b instruction
+.if ${MACHINE} == i386
+CONFIGURE_ARGS+=	USER_CFLAGS="-march=i586" USER_CXXFLAGS="-march=i586"
+.endif
+
+.if ${MACHINE} == alpha
+# -O2 causes gcc ICE on  main/format_pack.c and program/prog_execute.c
+O1= -fdefer-pop  -fguess-branch-probability -fcprop-registers \
+	-fif-conversion -fif-conversion2 -ftree-ccp -ftree-dce \
+	-ftree-dominator-opts -ftree-dse -ftree-ter -ftree-lrs -ftree-sra \
+	-ftree-copyrename -ftree-fre -ftree-ch -funit-at-a-time \
+	-fmerge-constants -fomit-frame-pointer
+
+O2= ${O1} -fthread-jumps -fcrossjumping -foptimize-sibling-calls \
+	-fcse-follow-jumps -fcse-skip-blocks -fgcse -fgcse-lm \
+	-fexpensive-optimizations -frerun-cse-after-loop \
+	-fcaller-saves -fpeephole2 -fschedule-insns -fschedule-insns2 \
+	-fsched-interblock  -fsched-spec -fregmove \
+	-fdelete-null-pointer-checks -freorder-blocks \
+	-freorder-functions -falign-functions -falign-jumps -falign-loops \
+	-falign-labels -ftree-pre
+
+CONFIGURE_ARGS+=       USER_CFLAGS="-O0 ${O2}"
+.endif
+
+depend:
+.if !exists(${.OBJDIR}/src/util/format_srgb.c)
+	lndir -s -e obj -e obj.${MACHINE_ARCH} -e Makefile.bsd-wrapper ${.CURDIR}
+.endif
+
+.include <bsd.xorg.mk>
