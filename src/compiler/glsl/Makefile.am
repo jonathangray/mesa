@@ -187,6 +187,8 @@ am__v_YACC_0 = @echo "  YACC    " $@;
 am__v_YACC_1 =
 
 MKDIR_GEN = $(AM_V_at)$(MKDIR_P) $(@D)
+
+if REGEN_SOURCES
 YACC_GEN = $(AM_V_YACC)$(YACC) $(YFLAGS)
 LEX_GEN = $(AM_V_LEX)$(LEX) $(LFLAGS)
 
@@ -203,6 +205,7 @@ glcpp/glcpp-parse.c glcpp/glcpp-parse.h: glcpp/glcpp-parse.y
 glcpp/glcpp-lex.c: glcpp/glcpp-lex.l
 	$(MKDIR_GEN)
 	$(LEX_GEN) -o $@ $(srcdir)/glcpp/glcpp-lex.l
+endif
 
 # Only the parsers (specifically the header files generated at the same time)
 # need to be in BUILT_SOURCES. Though if we list the parser headers YACC is
