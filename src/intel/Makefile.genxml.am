@@ -30,6 +30,7 @@ SUFFIXES = _pack.h _xml.h .xml
 
 $(GENXML_GENERATED_PACK_FILES): genxml/gen_pack_header.py
 
+if REGEN_SOURCES
 .xml_pack.h:
 	$(MKDIR_GEN)
 	$(PYTHON_GEN) $(srcdir)/genxml/gen_pack_header.py $< > $@ || ($(RM) $@; false)
@@ -41,6 +42,7 @@ genxml/genX_xml.h: genxml/gen_zipped_file.py $(GENXML_XML_FILES)
 genxml/genX_bits.h: genxml/gen_bits_header.py $(GENXML_XML_FILES)
 	$(MKDIR_GEN)
 	$(PYTHON_GEN) $(srcdir)/genxml/gen_bits_header.py -o $@ $(GENXML_XML_FILES:%=$(srcdir)/%)
+endif
 
 EXTRA_DIST += \
 	genxml/genX_pack.h \

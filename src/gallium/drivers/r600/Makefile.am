@@ -1,9 +1,11 @@
 include Makefile.sources
 include $(top_srcdir)/src/gallium/Automake.inc
 
+if REGEN_SOURCES
 egd_tables.h: $(srcdir)/egd_tables.py $(srcdir)/evergreend.h
 	$(AM_V_at)$(MKDIR_P) $(@D)
 	$(AM_V_GEN) $(PYTHON2) $(srcdir)/egd_tables.py $(srcdir)/evergreend.h > $@
+endif
 
 BUILT_SOURCES = $(R600_GENERATED_FILES)
 AM_CFLAGS = \
