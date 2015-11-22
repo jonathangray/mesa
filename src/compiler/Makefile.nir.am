@@ -32,6 +32,7 @@ nir_libnir_la_SOURCES =					\
 	$(SPIRV_GENERATED_FILES) 			\
 	$(NIR_GENERATED_FILES)
 
+if REGEN_SOURCES
 nir/nir_builder_opcodes.h: nir/nir_opcodes.py nir/nir_builder_opcodes_h.py
 	$(MKDIR_GEN)
 	$(PYTHON_GEN) $(srcdir)/nir/nir_builder_opcodes_h.py > $@ || ($(RM) $@; false)
@@ -55,6 +56,7 @@ nir/nir_opt_algebraic.c: nir/nir_opt_algebraic.py nir/nir_algebraic.py
 spirv/spirv_info.c: spirv/spirv_info_c.py spirv/spirv.core.grammar.json
 	$(MKDIR_GEN)
 	$(PYTHON_GEN) $(srcdir)/spirv/spirv_info_c.py $(srcdir)/spirv/spirv.core.grammar.json $@ || ($(RM) $@; false)
+endif
 
 noinst_PROGRAMS += spirv2nir
 

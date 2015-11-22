@@ -18,9 +18,11 @@ VULKAN_UTIL_SOURCES = \
 BUILT_SOURCES = \
 	$(VULKAN_UTIL_GENERATED_FILES)
 
+if REGEN_SOURCES
 util/vk_enum_to_str.c util/vk_enum_to_str.h: util/gen_enum_to_str.py $(vulkan_api_xml)
 	$(MKDIR_GEN)
 	$(PYTHON_GEN) $(srcdir)/util/gen_enum_to_str.py --xml $(vulkan_api_xml) --outdir $(top_builddir)/src/vulkan/util
+endif
 
 libvulkan_util_la_SOURCES = $(VULKAN_UTIL_SOURCES)
 
