@@ -138,6 +138,7 @@ libvulkan_radeon_la_SOURCES = $(VULKAN_GEM_FILES)
 
 vulkan_api_xml = $(top_srcdir)/src/vulkan/registry/vk.xml
 
+if REGEN_SOURCES
 radv_entrypoints.c: radv_entrypoints_gen.py radv_extensions.py $(vulkan_api_xml)
 	$(MKDIR_GEN)
 	$(AM_V_GEN)$(PYTHON) $(srcdir)/radv_entrypoints_gen.py \
@@ -158,6 +159,7 @@ vk_format_table.c: vk_format_table.py \
 		   vk_format_parse.py \
                    vk_format_layout.csv
 	$(PYTHON) $(srcdir)/vk_format_table.py $(srcdir)/vk_format_layout.csv > $@
+endif
 
 BUILT_SOURCES = $(VULKAN_GENERATED_FILES)
 CLEANFILES = $(BUILT_SOURCES) dev_icd.json radeon_icd.@host_cpu@.json
@@ -189,6 +191,7 @@ icdconf_DATA = radeon_icd.@host_cpu@.json
 # The following is used for development purposes, by setting VK_ICD_FILENAMES.
 noinst_DATA = dev_icd.json
 
+if REGEN_SOURCES
 dev_icd.json : radv_extensions.py radv_icd.py
 	$(AM_V_GEN)$(PYTHON) $(srcdir)/radv_icd.py \
 		--lib-path="${abs_top_builddir}/${LIB_DIR}" --out $@
@@ -196,5 +199,6 @@ dev_icd.json : radv_extensions.py radv_icd.py
 radeon_icd.@host_cpu@.json : radv_extensions.py radv_icd.py
 	$(AM_V_GEN)$(PYTHON) $(srcdir)/radv_icd.py \
 		--lib-path="${libdir}" --out $@
+endif
 
 include $(top_srcdir)/install-lib-links.mk
