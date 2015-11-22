@@ -97,6 +97,7 @@ BUILT_SOURCES = \
 	rasterizer/core/backends/gen_rasterizer3.cpp \
 	rasterizer/core/backends/gen_rasterizer.hpp
 
+if REGEN_SOURCES
 MKDIR_GEN = $(AM_V_at)$(MKDIR_P) $(@D)
 PYTHON_GEN = $(AM_V_GEN)$(PYTHON2) $(PYTHON_FLAGS)
 gen_swr_context_llvm.h: rasterizer/codegen/gen_llvm_types.py rasterizer/codegen/templates/gen_llvm.hpp swr_context.h
@@ -194,6 +195,7 @@ rasterizer/archrast/gen_ar_eventhandlerfile.hpp: rasterizer/codegen/gen_archrast
 		--output rasterizer/archrast/gen_ar_eventhandlerfile.hpp \
 		--gen_eventhandlerfile_hpp
 	$(AM_V_GEN)touch $@
+endif
 
 rasterizer/core/backends/gen_BackendPixelRate0.cpp \
 rasterizer/core/backends/gen_BackendPixelRate1.cpp \

@@ -197,6 +197,7 @@ am__v_YACC_1 =
 YACC_GEN = $(AM_V_YACC)$(YACC) $(YFLAGS)
 LEX_GEN = $(AM_V_LEX)$(LEX) $(LFLAGS)
 
+if REGEN_SOURCES
 glsl/glsl_parser.cpp glsl/glsl_parser.h: glsl/glsl_parser.yy
 	$(MKDIR_GEN)
 	$(YACC_GEN) -o $@ -p "_mesa_glsl_" --defines=$(builddir)/glsl/glsl_parser.h $(srcdir)/glsl/glsl_parser.yy
@@ -224,6 +225,7 @@ glsl/ir_expression_operation_constant.h: glsl/ir_expression_operation.py
 glsl/ir_expression_operation_strings.h: glsl/ir_expression_operation.py
 	$(MKDIR_GEN)
 	$(PYTHON_GEN) $(srcdir)/glsl/ir_expression_operation.py strings > $@ || ($(RM) $@; false)
+endif
 
 # Only the parsers (specifically the header files generated at the same time)
 # need to be in BUILT_SOURCES. Though if we list the parser headers YACC is
