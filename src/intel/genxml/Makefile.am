@@ -29,8 +29,10 @@ SUFFIXES = _pack.h .xml
 
 $(BUILT_SOURCES): gen_pack_header.py
 
+if REGEN_SOURCES
 .xml_pack.h:
 	$(PYTHON_GEN) $(srcdir)/gen_pack_header.py $< > $@
+endif
 
 CLEANFILES = $(BUILT_SOURCES)
 

@@ -68,12 +68,14 @@ libisl_gen9_la_CFLAGS = $(AM_CFLAGS) -DGEN_VERSIONx10=90
 
 BUILT_SOURCES = $(ISL_GENERATED_FILES)
 
+if REGEN_SOURCES
 PYTHON_GEN = $(AM_V_GEN)$(PYTHON2) $(PYTHON_FLAGS)
 
 isl_format_layout.c: gen_format_layout.py \
                      isl_format_layout.csv
 	$(PYTHON_GEN) $(srcdir)/gen_format_layout.py \
 	    --csv $(srcdir)/isl_format_layout.csv --out $@
+endif
 
 # ----------------------------------------------------------------------------
 #  Tests

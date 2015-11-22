@@ -43,9 +43,11 @@ AM_CFLAGS = \
 
 AM_CXXFLAGS = $(AM_CFLAGS)
 
+if REGEN_SOURCES
 brw_nir_trig_workarounds.c: brw_nir_trig_workarounds.py $(top_srcdir)/src/compiler/nir/nir_algebraic.py
 	$(MKDIR_GEN)
 	$(AM_V_GEN) PYTHONPATH=$(top_srcdir)/src/compiler/nir $(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_nir_trig_workarounds.py > $@ || ($(RM) $@; false)
+endif
 
 noinst_LTLIBRARIES = libi965_dri.la libi965_compiler.la
 libi965_dri_la_SOURCES = $(i965_FILES)
