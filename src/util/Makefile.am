@@ -95,7 +95,9 @@ EXTRA_DIST = \
 	sha1/README \
 	meson.build
 
+if REGEN_SOURCES
 PYTHON_GEN = $(AM_V_GEN)$(PYTHON) $(PYTHON_FLAGS)
 
 format_srgb.c: format_srgb.py
 	$(PYTHON_GEN) $(srcdir)/format_srgb.py > $@
+endif

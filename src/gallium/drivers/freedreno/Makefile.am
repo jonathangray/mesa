@@ -11,9 +11,11 @@ AM_CFLAGS = \
 	$(VALGRIND_CFLAGS)
 
 MKDIR_GEN = $(AM_V_at)$(MKDIR_P) $(@D)
+if REGEN_SOURCES
 ir3/ir3_nir_trig.c: ir3/ir3_nir_trig.py $(top_srcdir)/src/compiler/nir/nir_algebraic.py
 	$(MKDIR_GEN)
 	$(AM_V_GEN) $(PYTHON) $(PYTHON_FLAGS) $(srcdir)/ir3/ir3_nir_trig.py -p $(top_srcdir)/src/compiler/nir > $@ || ($(RM) $@; false)
+endif
 
 noinst_LTLIBRARIES = libfreedreno.la
 

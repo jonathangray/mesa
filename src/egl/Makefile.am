@@ -142,6 +142,7 @@ GLVND_GEN_DEPS = generate/gen_egl_dispatch.py \
 	generate/egl_other.xml
 
 PYTHON_GEN = $(AM_V_GEN)$(PYTHON) $(PYTHON_FLAGS)
+if REGEN_SOURCES
 g_egldispatchstubs.c: $(GLVND_GEN_DEPS)
 	$(PYTHON_GEN) $(top_srcdir)/src/egl/generate/gen_egl_dispatch.py source \
 		$(top_srcdir)/src/egl/generate/eglFunctionList.py \
@@ -153,6 +154,7 @@ g_egldispatchstubs.h: $(GLVND_GEN_DEPS)
 		$(top_srcdir)/src/egl/generate/eglFunctionList.py \
 		$(top_srcdir)/src/egl/generate/egl.xml \
 		$(top_srcdir)/src/egl/generate/egl_other.xml > $@
+endif
 
 BUILT_SOURCES += g_egldispatchstubs.c g_egldispatchstubs.h
 

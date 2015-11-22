@@ -28,6 +28,7 @@ SUFFIXES = _pack.h .xml
 
 $(BROADCOM_GENXML_GENERATED_FILES): cle/gen_pack_header.py
 
+if REGEN_SOURCES
 cle/v3d_packet_v21_pack.h: $(srcdir)/cle/v3d_packet_v21.xml $(srcdir)/cle/gen_pack_header.py
 	$(MKDIR_GEN)
 	$(PYTHON_GEN) $(srcdir)/cle/gen_pack_header.py $< 21 > $@ || ($(RM) $@; false)
@@ -48,6 +49,7 @@ GEN_ZIPPED = $(srcdir)/../intel/genxml/gen_zipped_file.py
 cle/v3d_xml.h: $(GEN_ZIPPED) $(BROADCOM_GENXML_XML_FILES)
 	$(MKDIR_GEN)
 	$(PYTHON_GEN) $(GEN_ZIPPED) $(BROADCOM_GENXML_XML_FILES:%=$(srcdir)/%) > $@ || ($(RM) $@; false)
+endif
 
 EXTRA_DIST += \
 	cle/gen_pack_header.py \
