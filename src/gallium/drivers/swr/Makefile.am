@@ -64,6 +64,7 @@ BUILT_SOURCES = \
 	rasterizer/archrast/gen_ar_eventhandlerfile.hpp \
 	rasterizer/core/gen_BackendPixelRate0.cpp
 
+if REGEN_SOURCES
 MKDIR_GEN = $(AM_V_at)$(MKDIR_P) $(@D)
 PYTHON_GEN = $(AM_V_GEN)$(PYTHON2) $(PYTHON_FLAGS)
 gen_swr_context_llvm.h: rasterizer/codegen/gen_llvm_types.py rasterizer/codegen/templates/gen_llvm.hpp swr_context.h
@@ -139,6 +140,7 @@ rasterizer/archrast/gen_ar_eventhandlerfile.hpp: rasterizer/codegen/gen_archrast
 		--proto $(srcdir)/rasterizer/archrast/events.proto \
 		--output rasterizer/archrast/gen_ar_eventhandlerfile.hpp \
 		--gen_eventhandlerfile_h
+endif
 
 # 5 SWR_MULTISAMPLE_TYPE_COUNT
 # 2 SWR_MSAA_SAMPLE_PATTERN_COUNT
