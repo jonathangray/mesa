@@ -32,6 +32,7 @@ nir_libnir_la_SOURCES =					\
 	$(SPIRV_GENERATED_FILES) 			\
 	$(NIR_GENERATED_FILES)
 
+if REGEN_SOURCES
 nir/nir_builder_opcodes.h: nir/nir_opcodes.py nir/nir_builder_opcodes_h.py nir/nir_intrinsics.py
 	$(MKDIR_GEN)
 	$(PYTHON_GEN) $(srcdir)/nir/nir_builder_opcodes_h.py > $@ || ($(RM) $@; false)
@@ -59,6 +60,7 @@ nir/nir_opcodes.c: nir/nir_opcodes.py nir/nir_opcodes_c.py
 nir/nir_opt_algebraic.c: nir/nir_opt_algebraic.py nir/nir_algebraic.py
 	$(MKDIR_GEN)
 	$(PYTHON_GEN) $(srcdir)/nir/nir_opt_algebraic.py > $@ || ($(RM) $@; false)
+endif
 
 check_PROGRAMS += nir/tests/control_flow_tests
 

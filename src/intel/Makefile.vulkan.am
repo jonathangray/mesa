@@ -24,6 +24,7 @@
 # out and we'll fail at `make dist'
 vulkan_api_xml = $(top_srcdir)/src/vulkan/registry/vk.xml
 
+if REGEN_SOURCES
 vulkan/anv_entrypoints.c: vulkan/anv_entrypoints_gen.py \
 			  vulkan/anv_extensions.py \
 			  $(vulkan_api_xml)
@@ -48,6 +49,7 @@ vulkan/anv_extensions.h: vulkan/anv_extensions_gen.py \
 	$(AM_V_GEN)$(PYTHON2) $(srcdir)/vulkan/anv_extensions_gen.py \
 		--xml $(vulkan_api_xml) \
 		--out-h $@
+endif
 
 BUILT_SOURCES += $(VULKAN_GENERATED_FILES)
 CLEANFILES += \
@@ -63,6 +65,7 @@ EXTRA_DIST += \
 	vulkan/anv_icd.py \
 	vulkan/TODO
 
+if REGEN_SOURCES
 vulkan/dev_icd.json : vulkan/anv_extensions.py vulkan/anv_icd.py
 	$(MKDIR_GEN)
 	$(AM_V_GEN)$(PYTHON2) $(srcdir)/vulkan/anv_icd.py \
@@ -72,6 +75,7 @@ vulkan/intel_icd.@host_cpu@.json : vulkan/anv_extensions.py vulkan/anv_icd.py
 	$(MKDIR_GEN)
 	$(AM_V_GEN)$(PYTHON2) $(srcdir)/vulkan/anv_icd.py \
 		--lib-path="${libdir}" --out $@
+endif
 
 if HAVE_INTEL_VULKAN
 
