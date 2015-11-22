@@ -111,10 +111,12 @@ shared_glapi_test_LDADD = \
 	$(top_builddir)/src/gtest/libgtest.la
 endif
 
+if REGEN_SOURCES
 shared-glapi/glapi_mapi_tmp.h : glapi/gen/gl_and_es_API.xml $(shared_glapi_gen_mapi_deps)
 	$(MKDIR_GEN)
 	$(PYTHON_GEN) $(srcdir)/mapi_abi.py --printer shared-glapi \
 		$(srcdir)/glapi/gen/gl_and_es_API.xml > $@
+endif
 
 if HAVE_OPENGL
 noinst_LTLIBRARIES = glapi/libglapi.la
@@ -210,9 +212,11 @@ es1api_libGLESv1_CM_la_LDFLAGS = \
 es1api_libGLESv1_CM_la_LIBADD += shared-glapi/libglapi.la
 endif
 
+if REGEN_SOURCES
 es1api/glapi_mapi_tmp.h: $(glapi_gen_mapi_deps)
 	$(MKDIR_GEN)
 	$(glapi_gen_mapi) glesv1 $(glapi_gen_gl_xml) > $@
+endif
 
 if HAVE_OPENGL_ES2
 TESTS += es2api/ABI-check
@@ -254,9 +258,11 @@ es2api_libGLESv2_la_LDFLAGS = \
 es2api_libGLESv2_la_LIBADD += shared-glapi/libglapi.la
 endif
 
+if REGEN_SOURCES
 es2api/glapi_mapi_tmp.h: $(glapi_gen_mapi_deps)
 	$(MKDIR_GEN)
 	$(glapi_gen_mapi) glesv2 $(glapi_gen_gl_xml) > $@
+endif
 
 include $(top_srcdir)/install-lib-links.mk
 

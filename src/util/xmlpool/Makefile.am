@@ -74,12 +74,14 @@ clean-local:
 
 # Default target options.h
 LOCALEDIR := .
+if REGEN_SOURCES
 options.h: t_options.h $(MOS)
 	$(AM_V_GEN) $(PYTHON) $(PYTHON_FLAGS) $(srcdir)/gen_xmlpool.py \
 	--template $(srcdir)/t_options.h \
 	--output options.h \
 	--localedir $(LOCALEDIR) \
 	--languages $(LANGS)
+endif
 
 # Update .mo files from the corresponding .po files.
 .po.gmo:

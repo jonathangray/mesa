@@ -149,6 +149,7 @@ GLVND_GEN_DEPS = $(top_scrdir)/src/mapi/new/genCommon.py \
 	$(GLVND_GEN_EGL_DEPS)
 
 PYTHON_GEN = $(AM_V_GEN)$(PYTHON) $(PYTHON_FLAGS)
+if REGEN_SOURCES
 g_egldispatchstubs.c: $(GLVND_GEN_DEPS)
 	$(PYTHON_GEN) $(top_srcdir)/src/egl/generate/gen_egl_dispatch.py source \
 		$(top_srcdir)/src/egl/generate/egl.xml \
@@ -158,6 +159,7 @@ g_egldispatchstubs.h: $(GLVND_GEN_DEPS)
 	$(PYTHON_GEN) $(top_srcdir)/src/egl/generate/gen_egl_dispatch.py header \
 		$(top_srcdir)/src/egl/generate/egl.xml \
 		$(top_srcdir)/src/egl/generate/egl_other.xml > $@
+endif
 
 BUILT_SOURCES += g_egldispatchstubs.c g_egldispatchstubs.h
 

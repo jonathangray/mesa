@@ -22,7 +22,11 @@
 .PHONY: git_sha1.h
 git_sha1.h:
 	@echo "updating $@"
+if REGEN_SOURCES
 	@$(PYTHON) $(top_srcdir)/bin/git_sha1_gen.py --output $@
+else
+	@echo '#define MESA_GIT_SHA1 ""' > $@
+endif
 
 BUILT_SOURCES = git_sha1.h
 CLEANFILES = $(BUILT_SOURCES)
