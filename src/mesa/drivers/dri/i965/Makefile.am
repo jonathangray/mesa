@@ -117,10 +117,12 @@ EXTRA_DIST = \
 	$(i965_oa_xml_FILES) \
 	meson.build
 
+if REGEN_SOURCES
 brw_oa_metrics.c: brw_oa.py $(i965_oa_xml_FILES)
 	$(PYTHON) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py \
 	--code=$(builddir)/brw_oa_metrics.c \
 	--header=$(builddir)/brw_oa_metrics.h \
 	$(i965_oa_xml_FILES:%=$(srcdir)/%)
+endif
 
 brw_oa_metrics.h: brw_oa_metrics.c
