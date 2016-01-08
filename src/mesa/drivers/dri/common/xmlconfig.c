@@ -944,6 +944,14 @@ static void parseOneConfigFile (XML_Parser p) {
 
 void driParseConfigFiles (driOptionCache *cache, const driOptionCache *info,
 			  int screenNum, const char *driverName) {
+#if defined(__OpenBSD__)
+    /*
+     * Opening drirc files is disabled by default so sandboxed
+     * browser processes with OpenGL contexts can drop the ability
+     * to read files.
+     */
+    initOptionCache (cache, info);
+#else
     char *filenames[2] = { SYSCONFDIR "/drirc", NULL};
     char *home;
     uint32_t i;
@@ -989,6 +997,7 @@ void driParseConfigFiles (driOptionCache *cache, const driOptionCache *info,
     }
 
     free(filenames[1]);
+#endif
 }
 
 void driDestroyOptionInfo (driOptionCache *info) {
