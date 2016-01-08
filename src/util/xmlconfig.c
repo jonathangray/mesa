@@ -1045,7 +1045,12 @@ driParseConfigFiles(driOptionCache *cache, const driOptionCache *info,
 {
    initOptionCache(cache, info);
 
-#if WITH_XMLCONFIG
+    /*
+     * Opening drirc files is disabled by default so sandboxed
+     * browser processes with OpenGL contexts can drop the ability
+     * to read files.
+     */
+#if WITH_XMLCONFIG && !defined(__OpenBSD__)
    char *home;
    struct OptConfData userData;
 
