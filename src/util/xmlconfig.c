@@ -991,6 +991,14 @@ driParseConfigFiles(driOptionCache *cache, const driOptionCache *info,
                     int screenNum, const char *driverName,
                     const char *kernelDriverName)
 {
+#if defined(__OpenBSD__)
+    /*
+     * Opening drirc files is disabled by default so sandboxed
+     * browser processes with OpenGL contexts can drop the ability
+     * to read files.
+     */
+    initOptionCache (cache, info);
+#else
     char *home;
     struct OptConfData userData;
 
@@ -1011,6 +1019,7 @@ driParseConfigFiles(driOptionCache *cache, const driOptionCache *info,
         snprintf(filename, PATH_MAX, "%s/.drirc", home);
         parseOneConfigFile(&userData, filename);
     }
+#endif
 }
 
 void
