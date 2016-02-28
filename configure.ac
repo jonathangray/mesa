@@ -2487,13 +2487,14 @@ if test "x$MESA_LLVM" != x0; then
     if ! $LLVM_CONFIG --libs ${LLVM_COMPONENTS} >/dev/null; then
        AC_MSG_ERROR([Calling ${LLVM_CONFIG} failed])
     fi
-    LLVM_LIBS="`$LLVM_CONFIG --libs ${LLVM_COMPONENTS}`"
 
     dnl llvm-config may not give the right answer when llvm is a built as a
     dnl single shared library, so we must work the library name out for
     dnl ourselves.
     dnl (See https://llvm.org/bugs/show_bug.cgi?id=6823)
     if test "x$enable_llvm_shared_libs" = xyes; then
+        LLVM_LIBS="`$LLVM_CONFIG --libs ${LLVM_COMPONENTS}`"
+
         dnl We can't use $LLVM_VERSION because it has 'svn' stripped out,
         LLVM_SO_NAME=LLVM-`$LLVM_CONFIG --version`
         AS_IF([test -f "$LLVM_LIBDIR/lib$LLVM_SO_NAME.$IMP_LIB_EXT"], [llvm_have_one_so=yes])
@@ -2520,6 +2521,8 @@ if test "x$MESA_LLVM" != x0; then
            dnl already added all of these objects to LLVM_LIBS.
         fi
     else
+        LLVM_LIBS="`$LLVM_CONFIG --libfiles ${LLVM_COMPONENTS}`"
+
         AC_MSG_WARN([Building mesa with statically linked LLVM may cause compilation issues])
         dnl We need to link to llvm system libs when using static libs
         dnl However, only llvm 3.5+ provides --system-libs
