@@ -66,6 +66,16 @@ static struct mem_block *exec_heap = NULL;
 static unsigned char *exec_mem = NULL;
 
 
+#ifdef __OpenBSD__
+
+static int
+init_heap(void)
+{
+   return 0;
+}
+
+#else
+
 static int
 init_heap(void)
 {
@@ -79,6 +89,8 @@ init_heap(void)
 
    return (exec_mem != MAP_FAILED);
 }
+
+#endif
 
 
 void *
