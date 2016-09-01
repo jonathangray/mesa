@@ -24,39 +24,42 @@
 
 
 /**
- * \file glapi_execmem.c
+ * \file execmem.c
+ * Functions for allocating executable memory.
  *
- * Function for allocating executable memory for dispatch stubs.
- *
- * Copied from main/execmem.c and simplified for dispatch stubs.
+ * \author Keith Whitwell
  */
 
 
+#include <stdio.h>
+#include "main/glheader.h"
+#include "execmem.h"
 #include "c11/threads.h"
-#include "util/u_call_once.h"
-#include "u_execmem.h"
 
-
-#define EXEC_MAP_SIZE (4*1024)
-
-static mtx_t exec_mutex;
-
-static unsigned int head = 0;
-
-static unsigned char *exec_mem = (unsigned char *)0;
 
 #if defined(__OpenBSD__)
 
-static int
-init_map(void)
+void *
+_mesa_exec_malloc(GLuint size)
 {
-  return 0;
+   return NULL;
+}
+
+void
+_mesa_exec_free(void *addr)
+{
 }
 
 #elif defined(__linux__) || defined(__NetBSD__) || defined(__sun) || defined(__HAIKU__)
 
+/*
+ * Allocate a large block of memory which can hold code then dole it out
+ * in pieces by means of the generic memory manager code.
+*/
+
 #include <unistd.h>
 #include <sys/mman.h>
+#include "util/u_mm.h"
 
 #ifdef MESA_SELINUX
 #include <selinux/selinux.h>
@@ -68,13 +71,16 @@ init_map(void)
 #endif
 
 
-/*
- * Dispatch stubs are of fixed size and never freed. Thus, we do not need to
- * overlay a heap, we just mmap a page and manage through an index.
- */
+#define EXEC_HEAP_SIZE (10*1024*1024)
+
+static mtx_t exec_mutex = _MTX_INITIALIZER_NP;
+
+static struct mem_block *exec_heap = NULL;
+static unsigned char *exec_mem = NULL;
+
 
 static int
-init_map(void)
+init_heap(void)
 {
 #ifdef MESA_SELINUX
    if (is_selinux_enabled()) {
@@ -84,82 +90,79 @@ init_map(void)
    }
 #endif
 
-   exec_mem = mmap(NULL, EXEC_MAP_SIZE, PROT_EXEC | PROT_READ | PROT_WRITE,
-                   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+   if (!exec_heap)
+      exec_heap = u_mmInit( 0, EXEC_HEAP_SIZE );
+
+   if (!exec_mem)
+      exec_mem = mmap(NULL, EXEC_HEAP_SIZE, PROT_EXEC | PROT_READ | PROT_WRITE,
+                      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 
    return (exec_mem != MAP_FAILED);
 }
 
 
-#elif defined(_WIN32)
-
-#include <windows.h>
-
-
-/*
- * Avoid Data Execution Prevention.
- */
-
-static int
-init_map(void)
-{
-   exec_mem = VirtualAlloc(NULL, EXEC_MAP_SIZE, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
-
-   return (exec_mem != NULL);
-}
-
-
-#else
-
-#include <stdlib.h>
-
-static int
-init_map(void)
-{
-   exec_mem = malloc(EXEC_MAP_SIZE);
-
-   return (exec_mem != NULL);
-}
-
-
-#endif
-
-static void
-u_execmem_init_once(void)
-{
-   if (!init_map())
-      exec_mem = NULL;
-   mtx_init(&exec_mutex, mtx_plain);
-}
-
 void *
-u_execmem_alloc(unsigned int size)
+_mesa_exec_malloc(unsigned size)
 {
-#ifndef MESA_EXECMEM
-   (void)size;
-   return NULL;
-#else
+   struct mem_block *block = NULL;
    void *addr = NULL;
-   static util_once_flag once = UTIL_ONCE_FLAG_INIT;
-   util_call_once(&once, u_execmem_init_once);
-   if (exec_mem == NULL)
-      return NULL;
 
    mtx_lock(&exec_mutex);
 
-   /* free space check, assumes no integer overflow */
-   if (head + size > EXEC_MAP_SIZE)
+   if (!init_heap())
       goto bail;
 
-   /* allocation, assumes proper addr and size alignement */
-   addr = exec_mem + head;
-   head += size;
+   if (exec_heap) {
+      size = (size + 31) & ~31;
+      block = u_mmAllocMem(exec_heap, size, 5, 0);
+   }
+
+   if (block)
+      addr = exec_mem + block->ofs;
+   else
+      printf("_mesa_exec_malloc failed\n");
 
 bail:
    mtx_unlock(&exec_mutex);
 
    return addr;
-#endif /* MESA_EXECMEM */
 }
 
 
+void
+_mesa_exec_free(void *addr)
+{
+   mtx_lock(&exec_mutex);
+
+   if (exec_heap) {
+      struct mem_block *block = u_mmFindBlock(exec_heap, (unsigned char *)addr - exec_mem);
+
+      if (block)
+	 u_mmFreeMem(block);
+   }
+
+   mtx_unlock(&exec_mutex);
+}
+
+
+#else
+
+/*
+ * Just use regular memory.
+ */
+
+void *
+_mesa_exec_malloc(unsigned size)
+{
+   return malloc( size );
+}
+
+
+void
+_mesa_exec_free(void *addr)
+{
+   free(addr);
+}
+
+
+#endif
