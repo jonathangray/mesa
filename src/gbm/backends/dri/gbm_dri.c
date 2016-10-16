@@ -260,7 +260,11 @@ dri_open_driver(struct gbm_dri_device *dri)
    /* XXX: Library name differs on per platforms basis. Update this as
     * osx/cygwin/windows/bsd gets support for GBM..
     */
+#ifdef __OpenBSD__
+   dlopen("libglapi.so", RTLD_LAZY | RTLD_GLOBAL);
+#else
    dlopen("libglapi.so.0", RTLD_LAZY | RTLD_GLOBAL);
+#endif
 
    return dri_loader_get_extensions(dri->driver_name);
 }
