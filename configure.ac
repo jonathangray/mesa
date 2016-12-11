@@ -2645,7 +2645,7 @@ if test -n "$with_gallium_drivers"; then
             HAVE_GALLIUM_R300=yes
             PKG_CHECK_MODULES([RADEON], [libdrm >= $LIBDRM_RADEON_REQUIRED libdrm_radeon >= $LIBDRM_RADEON_REQUIRED])
             require_libdrm "r300"
-            r300_require_llvm "r300"
+#            r300_require_llvm "r300"
             ;;
         xr600)
             HAVE_GALLIUM_R600=yes
