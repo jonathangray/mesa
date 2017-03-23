@@ -979,6 +979,9 @@ esac
 dnl See if posix_memalign is available
 AC_CHECK_FUNC([posix_memalign], [DEFINES="$DEFINES -DHAVE_POSIX_MEMALIGN"])
 
+dnl See if arc4random_buf is available
+AC_CHECK_FUNC([arc4random_buf], [DEFINES="$DEFINES -DHAVE_ARC4RANDOM_BUF"])
+
 dnl Check for zlib
 PKG_CHECK_MODULES([ZLIB], [zlib >= $ZLIB_REQUIRED])
 DEFINES="$DEFINES -DHAVE_ZLIB"
