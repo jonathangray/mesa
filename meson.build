@@ -1433,6 +1433,7 @@ functions_to_detect = {
   'timespec_get': '#include <time.h>',
   'memfd_create': '',
   'random_r': '',
+  'arc4random_buf': '',
   'flock': '',
   'strtok_r': '',
   'getrandom': '',

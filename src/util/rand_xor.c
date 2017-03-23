@@ -33,6 +33,7 @@
 #endif
 
 #include <time.h>
+#include <stdlib.h>
 
 #include "rand_xor.h"
 
@@ -68,7 +69,10 @@ s_rand_xorshift128plus(uint64_t seed[2], bool randomised_seed)
 #if !DETECT_OS_WINDOWS
    size_t seed_size = sizeof(uint64_t) * 2;
 
-#if defined(HAVE_GETRANDOM)
+#ifdef HAVE_ARC4RANDOM_BUF
+   arc4random_buf(seed, seed_size);
+   return;
+#elif defined(HAVE_GETRANDOM)
    ssize_t ret = getrandom(seed, seed_size, GRND_NONBLOCK);
    if (ret == seed_size)
       return;
