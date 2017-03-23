@@ -884,6 +884,7 @@ AC_CHECK_HEADER([xlocale.h], [DEFINES="$DEFINES -DHAVE_XLOCALE_H"])
 AC_CHECK_HEADER([sys/sysctl.h], [DEFINES="$DEFINES -DHAVE_SYS_SYSCTL_H"])
 AC_CHECK_HEADERS([endian.h])
 AC_CHECK_HEADER([dlfcn.h], [DEFINES="$DEFINES -DHAVE_DLFCN_H"])
+AC_CHECK_HEADER([sys/random.h], [DEFINES="$DEFINES -DHAVE_SYS_RANDOM_H"])
 AC_CHECK_FUNC([strtof], [DEFINES="$DEFINES -DHAVE_STRTOF"])
 AC_CHECK_FUNC([mkostemp], [DEFINES="$DEFINES -DHAVE_MKOSTEMP"])
 AC_CHECK_FUNC([timespec_get], [DEFINES="$DEFINES -DHAVE_TIMESPEC_GET"])
@@ -938,6 +939,9 @@ esac
 
 dnl See if posix_memalign is available
 AC_CHECK_FUNC([posix_memalign], [DEFINES="$DEFINES -DHAVE_POSIX_MEMALIGN"])
+
+dnl See if getentropy is available
+AC_CHECK_FUNC([getentropy], [DEFINES="$DEFINES -DHAVE_GETENTROPY"])
 
 dnl Check for zlib
 PKG_CHECK_MODULES([ZLIB], [zlib >= $ZLIB_REQUIRED])
