@@ -1373,6 +1373,7 @@ functions_to_detect = {
   'mkostemp': '',
   'memfd_create': '',
   'random_r': '',
+  'arc4random_buf': '',
   'flock': '',
   'strtok_r': '',
   'getrandom': '',
