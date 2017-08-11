@@ -60,6 +60,7 @@ __sync_sub_and_fetch_8(uint64_t *ptr, uint64_t val)
    return r;
 }
 
+#ifdef USE_GCC_ATOMIC_BUILTINS
 WEAK uint64_t
 __atomic_fetch_add_8(uint64_t *ptr, uint64_t val, int memorder)
 {
@@ -71,5 +72,6 @@ __atomic_fetch_sub_8(uint64_t *ptr, uint64_t val, int memorder)
 {
    return __sync_sub_and_fetch(ptr, val);
 }
+#endif /* USE_GCC_ATOMIC_BUILTINS */
 
 #endif
