@@ -481,6 +481,19 @@ if test "x$GCC_ATOMIC_BUILTINS_SUPPORTED" = xyes; then
 fi
 AC_SUBST([LIBATOMIC_LIBS])
 
+dnl Check if host supports 32-bit atomics
+AC_MSG_CHECKING(whether __sync_add_and_fetch_4 is supported)
+AC_LINK_IFELSE([AC_LANG_SOURCE([[
+#include <stdint.h>
+uint64_t v;
+int main() {
+    return __sync_add_and_fetch(&v, (uint32_t)1);
+}]])], GCC_32BIT_ATOMICS_SUPPORTED=yes, GCC_32BIT_ATOMICS_SUPPORTED=no)
+if test "x$GCC_32BIT_ATOMICS_SUPPORTED" != xyes; then
+    DEFINES="$DEFINES -DMISSING_32BIT_ATOMICS"
+fi
+AC_MSG_RESULT($GCC_32BIT_ATOMICS_SUPPORTED)
+
 dnl Check if host supports 64-bit atomics
 dnl note that lack of support usually results in link (not compile) error
 AC_MSG_CHECKING(whether __sync_add_and_fetch_8 is supported)
