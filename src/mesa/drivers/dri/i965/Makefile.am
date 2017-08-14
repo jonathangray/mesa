@@ -121,8 +121,44 @@ EXTRA_DIST = \
 # make and multiple invocations of the same script trying to write
 # to the same files.
 if REGEN_SOURCES
-brw_oa_%.h: brw_oa.py brw_oa_%.xml Makefile.am
-	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --header=$(builddir)/brw_oa_$(*).h --chipset=$(*) $(srcdir)/brw_oa_$(*).xml
-brw_oa_%.c: brw_oa.py brw_oa_%.xml Makefile.am
-	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --code=$(builddir)/brw_oa_$(*).c --chipset=$(*) $(srcdir)/brw_oa_$(*).xml
+brw_oa_hsw.h: brw_oa.py brw_oa_hsw.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --header=$(builddir)/brw_oa_hsw.h --chipset=hsw $(srcdir)/brw_oa_hsw.xml
+brw_oa_hsw.c: brw_oa.py brw_oa_hsw.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --code=$(builddir)/brw_oa_hsw.c --chipset=hsw $(srcdir)/brw_oa_hsw.xml
+brw_oa_bdw.h: brw_oa.py brw_oa_bdw.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --header=$(builddir)/brw_oa_bdw.h --chipset=bdw $(srcdir)/brw_oa_bdw.xml
+brw_oa_bdw.c: brw_oa.py brw_oa_bdw.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --code=$(builddir)/brw_oa_bdw.c --chipset=bdw $(srcdir)/brw_oa_bdw.xml
+brw_oa_chv.h: brw_oa.py brw_oa_chv.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --header=$(builddir)/brw_oa_chv.h --chipset=chv $(srcdir)/brw_oa_chv.xml
+brw_oa_chv.c: brw_oa.py brw_oa_chv.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --code=$(builddir)/brw_oa_chv.c --chipset=chv $(srcdir)/brw_oa_chv.xml
+brw_oa_sklgt2.h: brw_oa.py brw_oa_sklgt2.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --header=$(builddir)/brw_oa_sklgt2.h --chipset=sklgt2 $(srcdir)/brw_oa_sklgt2.xml
+brw_oa_sklgt2.c: brw_oa.py brw_oa_sklgt2.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --code=$(builddir)/brw_oa_sklgt2.c --chipset=sklgt2 $(srcdir)/brw_oa_sklgt2.xml
+brw_oa_sklgt3.h: brw_oa.py brw_oa_sklgt3.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --header=$(builddir)/brw_oa_sklgt3.h --chipset=sklgt3 $(srcdir)/brw_oa_sklgt3.xml
+brw_oa_sklgt3.c: brw_oa.py brw_oa_sklgt3.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --code=$(builddir)/brw_oa_sklgt3.c --chipset=sklgt3 $(srcdir)/brw_oa_sklgt3.xml
+brw_oa_sklgt4.h: brw_oa.py brw_oa_sklgt4.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --header=$(builddir)/brw_oa_sklgt4.h --chipset=sklgt4 $(srcdir)/brw_oa_sklgt4.xml
+brw_oa_sklgt4.c: brw_oa.py brw_oa_sklgt4.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --code=$(builddir)/brw_oa_sklgt4.c --chipset=sklgt4 $(srcdir)/brw_oa_sklgt4.xml
+brw_oa_bxt.h: brw_oa.py brw_oa_bxt.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --header=$(builddir)/brw_oa_bxt.h --chipset=bxt $(srcdir)/brw_oa_bxt.xml
+brw_oa_bxt.c: brw_oa.py brw_oa_bxt.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --code=$(builddir)/brw_oa_bxt.c --chipset=bxt $(srcdir)/brw_oa_bxt.xml
+brw_oa_kblgt2.h: brw_oa.py brw_oa_kblgt2.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --header=$(builddir)/brw_oa_kblgt2.h --chipset=kblgt2 $(srcdir)/brw_oa_kblgt2.xml
+brw_oa_kblgt2.c: brw_oa.py brw_oa_kblgt2.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --code=$(builddir)/brw_oa_kblgt2.c --chipset=kblgt2 $(srcdir)/brw_oa_kblgt2.xml
+brw_oa_kblgt3.h: brw_oa.py brw_oa_kblgt3.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --header=$(builddir)/brw_oa_kblgt3.h --chipset=kblgt3 $(srcdir)/brw_oa_kblgt3.xml
+brw_oa_kblgt3.c: brw_oa.py brw_oa_kblgt3.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --code=$(builddir)/brw_oa_kblgt3.c --chipset=kblgt3 $(srcdir)/brw_oa_kblgt3.xml
+brw_oa_glk.h: brw_oa.py brw_oa_glk.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --header=$(builddir)/brw_oa_glk.h --chipset=glk $(srcdir)/brw_oa_glk.xml
+brw_oa_glk.c: brw_oa.py brw_oa_glk.xml Makefile.am
+	$(PYTHON2) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py --code=$(builddir)/brw_oa_glk.c --chipset=glk $(srcdir)/brw_oa_glk.xml
 endif
