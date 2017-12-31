@@ -172,6 +172,11 @@ disk_cache_create(const char *gpu_name, const char *timestamp,
    struct stat sb;
    size_t size;
 
+#ifdef __OpenBSD__
+   /* default to no disk shader cache to avoid pledge violations in chromium */
+      return NULL;
+#endif
+
    /* If running as a users other than the real user disable cache */
    if (geteuid() != getuid())
       return NULL;
