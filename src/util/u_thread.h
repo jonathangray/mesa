@@ -78,7 +78,7 @@ static inline void u_thread_setname( const char *name )
 static inline int64_t
 u_thread_get_time_nano(thrd_t thread)
 {
-#if defined(__linux__) && defined(HAVE_PTHREAD)
+#if defined(HAVE_PTHREAD)
    struct timespec ts;
    clockid_t cid;
 
