@@ -19,6 +19,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 # IN THE SOFTWARE.
 
+if REGEN_SOURCES
 .PHONY: git_sha1.h.tmp
 git_sha1.h.tmp:
 	@$(PYTHON2) $(top_srcdir)/bin/git_sha1_gen.py > $@
@@ -30,6 +31,7 @@ git_sha1.h: git_sha1.h.tmp
 	else \
 		rm git_sha1.h.tmp ;\
 	fi
+endif
 
 BUILT_SOURCES = git_sha1.h
 CLEANFILES = $(BUILT_SOURCES)
