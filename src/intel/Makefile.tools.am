@@ -54,7 +54,8 @@ tools_aubinator_error_decode_LDADD = \
 	compiler/libintel_compiler.la \
 	$(top_builddir)/src/util/libmesautil.la \
 	$(PTHREAD_LIBS) \
-	$(ZLIB_LIBS)
+	$(ZLIB_LIBS) \
+	-lm
 
 tools_aubinator_error_decode_CFLAGS = \
 	$(AM_CFLAGS) \
