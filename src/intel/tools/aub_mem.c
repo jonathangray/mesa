@@ -28,7 +28,7 @@
 
 #include "aub_mem.h"
 
-#ifndef HAVE_MEMFD_CREATE
+#if !defined(HAVE_MEMFD_CREATE) && !defined(__OpenBSD__)
 #include <sys/syscall.h>
 
 static inline int
@@ -373,7 +373,14 @@ aub_mem_init(struct aub_mem *mem)
 
    list_inithead(&mem->maps);
 
+#ifdef __OpenBSD__
+   char mem_path[] = "/tmp/mesa-XXXXXXXXXX";
+   mem->mem_fd = shm_mkstemp(mem_path);
+   if (mem->mem_fd != -1)
+      shm_unlink(mem_path);
+#else
    mem->mem_fd = memfd_create("phys memory", 0);
+#endif
 
    return mem->mem_fd != -1;
 }
