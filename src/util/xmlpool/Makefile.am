@@ -82,7 +82,7 @@ options.h: t_options.h $(MOS)
 	--languages $(LANGS)
 
 # Update .mo files from the corresponding .po files.
-%.gmo: %.po
+.po.gmo:
 	@mo="$@"; \
 	lang=$${mo%%/*}; \
 	echo "Updating ($$lang) $@ from $?."; \
