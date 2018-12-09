@@ -760,16 +760,19 @@ LDFLAGS=$save_LDFLAGS
 AM_CONDITIONAL(HAVE_LD_DYNAMIC_LIST, test "$have_ld_dynamic_list" = "yes")
 
 dnl
-dnl OSX linker does not support build-id
+dnl Check if linker supports build-id
 dnl
-case "$host_os" in
-darwin*)
-    LD_BUILD_ID=""
-    ;;
-*)
-    LD_BUILD_ID="-Wl,--build-id=sha1"
-    ;;
-esac
+save_LDFLAGS=$LDFLAGS
+LDFLAGS="$LDFLAGS -Wl,--build-id=sha1"
+AC_MSG_CHECKING([if ld supports build-id])
+AC_LINK_IFELSE(
+    [AC_LANG_SOURCE([int main() { return 0;}])],
+    [AC_MSG_RESULT([yes])
+        LD_BUILD_ID="-Wl,--build-id=sha1";],
+    [AC_MSG_RESULT([no])
+        LD_BUILD_ID="";])
+LDFLAGS=$save_LDFLAGS
+
 AC_SUBST([LD_BUILD_ID])
 
 dnl
