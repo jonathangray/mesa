@@ -768,7 +768,7 @@ AC_MSG_CHECKING([if ld supports build-id])
 AC_LINK_IFELSE(
     [AC_LANG_SOURCE([int main() { return 0;}])],
     [AC_MSG_RESULT([yes])
-        LD_BUILD_ID="-Wl,--build-id=sha1";],
+        LD_BUILD_ID="-Wl,--build-id=sha1";DEFINES="$DEFINES -DHAVE_LD_BUILD_ID";],
     [AC_MSG_RESULT([no])
         LD_BUILD_ID="";])
 LDFLAGS=$save_LDFLAGS
