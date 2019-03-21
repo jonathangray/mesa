@@ -25,8 +25,20 @@
 #include <unistd.h>
 #include <limits.h>
 #include <assert.h>
+#ifdef __linux__
 #include <linux/memfd.h>
+#else
+#include <fcntl.h>
+#endif
 #include <sys/mman.h>
+
+#ifndef MAP_POPULATE
+#define MAP_POPULATE 0
+#endif
+
+#ifndef MFD_CLOEXEC
+#define MFD_CLOEXEC O_CLOEXEC
+#endif
 
 #include "anv_private.h"
 
@@ -113,7 +125,12 @@ struct anv_mmap_cleanup {
 static inline int
 memfd_create(const char *name, unsigned int flags)
 {
+#ifdef __linux__
    return syscall(SYS_memfd_create, name, flags);
+#else
+  char template[] = "/tmp/mesa-XXXXXXXXXX";
+  return shm_mkstemp(template);
+#endif
 }
 #endif
 
