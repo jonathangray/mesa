@@ -65,6 +65,10 @@
 #include "compiler/glsl_types.h"
 #include "util/xmlpool.h"
 
+#ifndef CLOCK_MONOTONIC_RAW
+#define CLOCK_MONOTONIC_RAW CLOCK_MONOTONIC
+#endif
+
 static struct radv_timeline_point *
 radv_timeline_find_point_at_least_locked(struct radv_device *device,
                                          struct radv_timeline *timeline,
