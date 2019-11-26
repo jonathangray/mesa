@@ -159,6 +159,14 @@ vk_format_table.c: vk_format_table.py \
 		   vk_format_parse.py \
                    vk_format_layout.csv
 	$(PYTHON) $(srcdir)/vk_format_table.py $(srcdir)/vk_format_layout.csv > $@
+
+gfx10_format_table.h: gfx10_format_table.py \
+                      vk_format_layout.csv \
+                      $(srcdir)/../registers/gfx10-rsrc.json
+	$(PYTHON) $(srcdir)/gfx10_format_table.py \
+	    $(srcdir)/vk_format_layout.csv \
+	    $(srcdir)/../registers/gfx10-rsrc.json \
+	    > $@
 endif
 
 BUILT_SOURCES = $(VULKAN_GENERATED_FILES)

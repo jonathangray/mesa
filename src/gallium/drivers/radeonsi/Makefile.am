@@ -54,6 +54,12 @@ MERGE_DRIINFO = $(top_srcdir)/src/util/merge_driinfo.py
 if REGEN_SOURCES
 si_driinfo.h: $(MERGE_DRIINFO) $(GEN_DRIINFO_INPUTS)
 	$(PYTHON_GEN) $(MERGE_DRIINFO) $(GEN_DRIINFO_INPUTS) > $@ || ($(RM) $@; false)
+
+gfx10_format_table.h: $(srcdir)/gfx10_format_table.py $(top_srcdir)/src/gallium/auxiliary/util/u_format.csv $(top_srcdir)/src/amd/registers/gfx10-rsrc.json
+	$(PYTHON_GEN) $(srcdir)/gfx10_format_table.py \
+	    $(top_srcdir)/src/gallium/auxiliary/util/u_format.csv \
+	    $(top_srcdir)/src/amd/registers/gfx10-rsrc.json \
+	    > $@
 endif
 
 BUILT_SOURCES = $(GENERATED_SOURCES)
