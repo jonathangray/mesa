@@ -39,8 +39,7 @@ gldir = $(includedir)/GL
 gl_HEADERS = \
   $(top_srcdir)/include/GL/gl.h \
   $(top_srcdir)/include/GL/glext.h \
-  $(top_srcdir)/include/GL/glcorearb.h \
-  $(top_srcdir)/include/GL/gl_mangle.h
+  $(top_srcdir)/include/GL/glcorearb.h
 endif
 
 # TODO: When building with glvnd, glvnd itself should be providing gl.pc and the headers
@@ -48,8 +47,7 @@ if HAVE_GLX
 glxdir = $(includedir)/GL
 glx_HEADERS = \
   $(top_srcdir)/include/GL/glx.h \
-  $(top_srcdir)/include/GL/glxext.h \
-  $(top_srcdir)/include/GL/glx_mangle.h
+  $(top_srcdir)/include/GL/glxext.h
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = mesa/gl.pc
 endif
