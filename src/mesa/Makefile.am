@@ -131,10 +131,6 @@ endif
 MESA_ASM_FILES_FOR_ARCH =
 
 if HAVE_X86_ASM
-noinst_PROGRAMS = gen_matypes
-
-gen_matypes_SOURCES = x86/gen_matypes.c
-BUILT_SOURCES += matypes.h
 
 if HAVE_X86_64_ASM
 MESA_ASM_FILES_FOR_ARCH += $(X86_64_FILES)
@@ -187,15 +183,6 @@ program/lex.yy.c: program/program_lexer.l
 program/program_parse.tab.c program/program_parse.tab.h: program/program_parse.y
 	$(MKDIR_GEN)
 	$(YACC_GEN) -o $@ -p "_mesa_program_" --defines=$(builddir)/program/program_parse.tab.h $(srcdir)/program/program_parse.y
-endif
-
-if GEN_ASM_OFFSETS
-matypes.h: $(gen_matypes_SOURCES)
-	$(AM_V_GEN)$(COMPILE) $< -DASM_OFFSETS -S -o - | \
-		sed -n '/^->/{s:^->::;/[$$]/{s:^:#define :;s:[$$]::};p}' > $@
-else
-matypes.h: gen_matypes
-	$(AM_V_GEN)./gen_matypes > $@
 endif
 
 # Emacs tags
