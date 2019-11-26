@@ -65,9 +65,19 @@ endif
 common_libamd_common_la_LIBADD = $(LIBELF_LIBS)
 
 if REGEN_SOURCES
-common/sid_tables.h: $(srcdir)/common/sid_tables.py $(srcdir)/common/sid.h $(srcdir)/common/gfx9d.h
+common/sid_tables.h: $(srcdir)/common/sid_tables.py $(srcdir)/common/sid.h $(srcdir)/registers/amdgfxregs.json  $(srcdir)/registers/pkt3.json $(srcdir)/registers/gfx10.json $(srcdir)/registers/gfx10-rsrc.json
 	$(AM_V_at)$(MKDIR_P) $(@D)
-	$(AM_V_GEN) $(PYTHON) $(srcdir)/common/sid_tables.py $(srcdir)/common/sid.h $(srcdir)/common/gfx9d.h > $@
+	$(AM_V_GEN) $(PYTHON) $(srcdir)/common/sid_tables.py  $(srcdir)/common/sid.h \
+	    $(srcdir)/registers/amdgfxregs.json $(srcdir)/registers/pkt3.json \
+	    $(srcdir)/registers/gfx10.json $(srcdir)/registers/gfx10-rsrc.json \
+	    > $@
+	    
+common/amdgfxregs.h: $(srcdir)/registers/makeregheader.py $(srcdir)/registers/amdgfxregs.json $(srcdir)/registers/pkt3.json $(srcdir)/registers/gfx10.json $(srcdir)/registers/gfx10-rsrc.json
+	$(AM_V_at)$(MKDIR_P) $(@D)
+	$(AM_V_GEN) $(PYTHON) $(srcdir)/registers/makeregheader.py \
+	    $(srcdir)/registers/amdgfxregs.json $(srcdir)/registers/pkt3.json \
+	    $(srcdir)/registers/gfx10.json $(srcdir)/registers/gfx10-rsrc.json \
+	    --sort address --guard AMDGFXREGS_H > $@
 endif
 
 BUILT_SOURCES = $(AMD_GENERATED_FILES)

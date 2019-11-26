@@ -30,6 +30,7 @@ addrlib_libamdgpu_addrlib_la_CPPFLAGS = \
 	-I$(srcdir)/addrlib/src \
 	-I$(srcdir)/addrlib/src/core \
 	-I$(srcdir)/addrlib/src/chip/gfx9 \
+	-I$(srcdir)/addrlib/src/chip/gfx10 \
 	-I$(srcdir)/addrlib/src/chip/r800
 
 addrlib_libamdgpu_addrlib_la_CXXFLAGS = \
