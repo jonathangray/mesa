@@ -92,6 +92,7 @@ include Makefile.dev.am
 include Makefile.genxml.am
 include Makefile.isl.am
 include Makefile.tools.am
+include Makefile.perf.am
 
 include Makefile.vulkan.am
 

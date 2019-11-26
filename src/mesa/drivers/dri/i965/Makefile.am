@@ -106,23 +106,11 @@ libi965_dri_la_LIBADD = \
 	$(top_builddir)/src/intel/isl/libisl.la \
 	$(top_builddir)/src/intel/compiler/libintel_compiler.la \
 	$(top_builddir)/src/intel/blorp/libblorp.la \
+	$(top_builddir)/src/intel/perf/libintel_perf.la \
 	$(I965_PERGEN_LIBS) \
 	$(LIBDRM_LIBS)
 
-BUILT_SOURCES = $(i965_oa_GENERATED_FILES)
 CLEANFILES = $(BUILT_SOURCES)
 
 EXTRA_DIST = \
-	brw_oa.py \
-	$(i965_oa_xml_FILES) \
 	meson.build
-
-if REGEN_SOURCES
-brw_oa_metrics.c: brw_oa.py $(i965_oa_xml_FILES)
-	$(PYTHON) $(PYTHON_FLAGS) $(srcdir)/brw_oa.py \
-	--code=$(builddir)/brw_oa_metrics.c \
-	--header=$(builddir)/brw_oa_metrics.h \
-	$(i965_oa_xml_FILES:%=$(srcdir)/%)
-endif
-
-brw_oa_metrics.h: brw_oa_metrics.c
