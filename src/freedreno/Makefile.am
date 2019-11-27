@@ -72,3 +72,6 @@ ir3/ir3_nir_trig.c: ir3/ir3_nir_trig.py $(top_srcdir)/src/compiler/nir/nir_algeb
 	$(MKDIR_GEN)
 	$(AM_V_GEN) $(PYTHON) $(PYTHON_FLAGS) $(srcdir)/ir3/ir3_nir_trig.py -p $(top_srcdir)/src/compiler/nir > $@ || ($(RM) $@; false)
 
+ir3/ir3_nir_imul.c: ir3/ir3_nir_imul.py $(top_srcdir)/src/compiler/nir/nir_algebraic.py
+	$(MKDIR_GEN)
+	$(AM_V_GEN) $(PYTHON) $(PYTHON_FLAGS) $(srcdir)/ir3/ir3_nir_imul.py -p $(top_srcdir)/src/compiler/nir > $@ || ($(RM) $@; false)

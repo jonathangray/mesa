@@ -71,7 +71,7 @@ endif
 endif
 
 if HAVE_GALLIUM_SWR
-SUBDIRS += drivers/swr
+#SUBDIRS += drivers/swr
 endif
 
 ## tegra

@@ -223,12 +223,12 @@ egl_HEADERS = \
 	$(top_srcdir)/include/EGL/eglmesaext.h \
 	$(top_srcdir)/include/EGL/eglplatform.h
 
-TESTS = egl-entrypoint-check
+TESTS = egl-entrypoint-check.py
 
 if USE_LIBGLVND
 #TODO: glvnd symbol check
 else
-TESTS += egl-symbols-check
+TESTS += egl-symbols.txt
 endif
 
 EXTRA_DIST = \

@@ -16,9 +16,7 @@ EXTRA_DIST = \
 	overlay-layer/overlay_params.h \
 	overlay-layer/overlay.frag \
 	overlay-layer/overlay.vert \
-	overlay-layer/VkLayer_MESA_overlay.json.in \
-	overlay-layer/vk_layer_table.cpp \
-	overlay-layer/vk_layer_table.h \
+	overlay-layer/VkLayer_MESA_overlay.json \
 	util/gen_enum_to_str.py \
 	util/meson.build \
 	wsi/meson.build \
