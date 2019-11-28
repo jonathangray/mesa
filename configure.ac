@@ -1845,12 +1845,12 @@ dnl
 AC_ARG_ENABLE([glx-tls],
     [AS_HELP_STRING([--enable-glx-tls],
         [enable TLS support in GLX @<:@default=enabled@:>@])],
-    [GLX_USE_TLS="$enableval"],
-    [GLX_USE_TLS=yes])
-AC_SUBST(GLX_TLS, ${GLX_USE_TLS})
+    [USE_ELF_TLS="$enableval"],
+    [USE_ELF_TLS=yes])
+AC_SUBST(GLX_TLS, ${USE_ELF_TLS})
 
-if test "x$GLX_USE_TLS" = xyes; then
-    DEFINES="$DEFINES -DGLX_USE_TLS"
+if test "x$USE_ELF_TLS" = xyes; then
+    DEFINES="$DEFINES -DUSE_ELF_TLS"
 fi
 
 dnl Read-only text section on x86 hardened platforms
