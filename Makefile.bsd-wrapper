@@ -86,6 +86,10 @@ CONFIGURE_ARGS+=       USER_CFLAGS="-O0"
 CONFIGURE_ARGS+=       USER_CFLAGS="-O0"
 .endif
 
+.if ${MACHINE} == sparc64
+CONFIGURE_ARGS+=       USER_CFLAGS="-O0"
+.endif
+
 ${.OBJDIR}/src/util/format_srgb.c:
 	lndir -s -e obj -e obj.${MACHINE_ARCH} -e Makefile.bsd-wrapper ${.CURDIR}
 
