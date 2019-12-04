@@ -405,7 +405,7 @@ __normal_user(void)
 #if defined(_WIN32)
    return true;
 #else
-   return geteuid() == getuid() && getegid() == getgid();
+   return issetugid() == 0 && geteuid() == getuid() && getegid() == getgid();
 #endif
 }
 
