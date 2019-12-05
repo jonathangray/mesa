@@ -351,29 +351,6 @@ anv_physical_device_free_disk_cache(struct anv_physical_device *device)
 #endif
 }
 
-static uint64_t
-get_available_system_memory()
-{
-   char *meminfo = os_read_file("/proc/meminfo");
-   if (!meminfo)
-      return 0;
-
-   char *str = strstr(meminfo, "MemAvailable:");
-   if (!str) {
-      free(meminfo);
-      return 0;
-   }
-
-   uint64_t kb_mem_available;
-   if (sscanf(str, "MemAvailable: %" PRIx64, &kb_mem_available) == 1) {
-      free(meminfo);
-      return kb_mem_available << 10;
-   }
-
-   free(meminfo);
-   return 0;
-}
-
 static VkResult
 anv_physical_device_init(struct anv_physical_device *device,
                          struct anv_instance *instance,
@@ -503,7 +480,8 @@ anv_physical_device_init(struct anv_physical_device *device,
     */
    device->has_bindless_samplers = device->info.gen >= 8;
 
-   device->has_mem_available = get_available_system_memory() != 0;
+   uint64_t avail_mem;
+   device->has_mem_available = os_get_available_system_memory(&avail_mem);
 
    /* Starting with Gen10, the timestamp frequency of the command streamer may
     * vary from one part to another. We can query the value from the kernel.
@@ -1815,8 +1793,8 @@ anv_get_memory_budget(VkPhysicalDevice physicalDevice,
                       VkPhysicalDeviceMemoryBudgetPropertiesEXT *memoryBudget)
 {
    ANV_FROM_HANDLE(anv_physical_device, device, physicalDevice);
-   uint64_t sys_available = get_available_system_memory();
-   assert(sys_available > 0);
+   uint64_t sys_available;
+   assert(os_get_available_system_memory(&sys_available));
 
    VkDeviceSize total_heaps_size = 0;
    for (size_t i = 0; i < device->memory.heap_count; i++)
