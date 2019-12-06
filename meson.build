@@ -1102,6 +1102,8 @@ endif
 ld_args_build_id = []
 if build_machine.system() != 'darwin'
    ld_args_build_id += '-Wl,--build-id=sha1'
+   # XXX test if supported by linker
+   pre_args += '-DHAVE_LD_BUILD_ID'
 endif
 
 # check for dl support
