@@ -860,6 +860,8 @@ if ['linux', 'cygwin', 'gnu', 'gnu/kfreebsd'].contains(host_machine.system())
   pre_args += '-D_GNU_SOURCE'
 elif host_machine.system() == 'sunos'
   pre_args += '-D__EXTENSIONS__'
+elif host_machine.system() == 'openbsd'
+  pre_args += '-D_ISOC11_SOURCE'
 endif
 
 # Check for generic C arguments
