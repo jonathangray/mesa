@@ -1516,6 +1516,11 @@ if dep_dl.found()
   gl_priv_libs += '-ldl'
 endif
 
+gbm_priv_libs = []
+if dep_dl.found()
+  gbm_priv_libs += '-ldl'
+endif
+
 pkg = import('pkgconfig')
 
 prog_nm = find_program('nm', required : false)
