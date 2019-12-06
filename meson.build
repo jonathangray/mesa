@@ -1707,6 +1707,12 @@ if dep_dl.found()
   gl_priv_libs += '-ldl'
 endif
 
+# FIXME: autotools lists this as incomplete
+gbm_priv_libs = []
+if dep_dl.found()
+  gbm_priv_libs += '-ldl'
+endif
+
 pkg = import('pkgconfig')
 
 if host_machine.system() == 'windows'
