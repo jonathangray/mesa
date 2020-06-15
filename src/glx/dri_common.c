@@ -52,7 +52,11 @@
 #endif
 
 #ifndef GL_LIB_NAME
+#ifdef __OpenBSD__
+#define GL_LIB_NAME "libGL.so"
+#else
 #define GL_LIB_NAME "libGL.so.1"
+#endif
 #endif
 
 /**
