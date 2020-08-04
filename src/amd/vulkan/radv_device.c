@@ -28,16 +28,24 @@
 #include "dirent.h"
 #include <errno.h>
 #include <fcntl.h>
+
+#ifdef __linux__
 #include <linux/audit.h>
 #include <linux/bpf.h>
 #include <linux/filter.h>
 #include <linux/seccomp.h>
 #include <linux/unistd.h>
+#endif
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <string.h>
+
+#ifdef __linux__
 #include <sys/prctl.h>
+#endif
+
 #include <sys/wait.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -2350,7 +2358,9 @@ radv_get_int_debug_option(const char *name, int default_value)
 }
 
 static int install_seccomp_filter() {
-
+#ifndef __linux__
+	return -1;
+#else
 	struct sock_filter filter[] = {
 		/* Check arch is 64bit x86 */
 		BPF_STMT(BPF_LD + BPF_W + BPF_ABS, (offsetof(struct seccomp_data, arch))),
@@ -2407,6 +2417,7 @@ static int install_seccomp_filter() {
 		return -1;
 
 	return 0;
+#endif
 }
 
 /* Helper function with timeout support for reading from the pipe between
