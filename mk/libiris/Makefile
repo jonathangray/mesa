@@ -27,7 +27,7 @@ SRCS=	iris_batch.c \
 
 .include "../Makefile.inc"
 
-CFLAGS+=	${C_VIS_ARGS} ${C_SSE2_ARGS}
+CFLAGS+=	${C_VIS_ARGS} ${C_SSE2_ARGS} -Wno-initializer-overrides
 CPPFLAGS+=	-DGALLIUM_IRIS \
 		-I${MESA_SRC}/src/gallium/drivers/iris \
 		-I${MESA_SRC}/src/gallium/include \

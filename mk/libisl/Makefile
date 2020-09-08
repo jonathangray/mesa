@@ -5,7 +5,6 @@ LIB=	isl
 NOPROFILE=
 
 SRCS=	isl.c \
-	isl_aux_info.c \
 	isl_drm.c \
 	isl_format.c \
 	isl_storage_image.c

@@ -11,6 +11,7 @@ SRCS=	iris_drm_winsys.c
 CFLAGS+=	${C_VIS_ARGS}
 CPPFLAGS+=	-I${MESA_SRC}/src/gallium/include \
 		-I${MESA_SRC}/src/gallium/auxiliary \
+		-I${MESA_SRC}/src/gallium/drivers \
 		-I${MESA_SRC}/src/gallium/winsys/iris/drm
 
 install:

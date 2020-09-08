@@ -15,6 +15,7 @@ CFLAGS+=	${C_VIS_ARGS}
 CPPFLAGS+=	-I${MESA_SRC}/src/gallium/include \
 		-I${MESA_SRC}/src/gallium/auxiliary \
 		-I${MESA_SRC}/src/gallium/winsys/amdgpu/drm \
+		-I${MESA_SRC}/src/amd \
 		-I${MESA_SRC}/src/amd/common \
 		-I${MESA_SRC}/src/amd/llvm \
 		-I${MESA_SRC}/generated/src/amd/common

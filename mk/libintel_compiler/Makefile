@@ -42,7 +42,6 @@ SRCS=	brw_cfg.cpp \
 	brw_fs_validate.cpp \
 	brw_fs_visitor.cpp \
 	brw_interpolation_map.c \
-	brw_ir_performance.cpp \
 	brw_nir.c \
 	brw_nir_analyze_boolean_resolves.c \
 	brw_nir_analyze_ubo_ranges.c \
