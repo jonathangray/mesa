@@ -1816,7 +1816,7 @@ void visit_alu_instr(isel_context *ctx, nir_alu_instr *instr)
       } else if (dst.regClass() == v2) {
          if (ctx->block->fp_mode.must_flush_denorms16_64 && ctx->program->chip_class < GFX9) {
             Temp tmp = bld.vop3(aco_opcode::v_max_f64, bld.def(v2), src0, src1);
-            bld.vop3(aco_opcode::v_mul_f64, Definition(dst), Operand(0x3FF0000000000000lu), tmp);
+            bld.vop3(aco_opcode::v_mul_f64, Definition(dst), Operand(UINT64_C(0x3FF0000000000000)), tmp);
          } else {
             bld.vop3(aco_opcode::v_max_f64, Definition(dst), src0, src1);
          }
@@ -1838,7 +1838,7 @@ void visit_alu_instr(isel_context *ctx, nir_alu_instr *instr)
       } else if (dst.regClass() == v2) {
          if (ctx->block->fp_mode.must_flush_denorms16_64 && ctx->program->chip_class < GFX9) {
             Temp tmp = bld.vop3(aco_opcode::v_min_f64, bld.def(v2), src0, src1);
-            bld.vop3(aco_opcode::v_mul_f64, Definition(dst), Operand(0x3FF0000000000000lu), tmp);
+            bld.vop3(aco_opcode::v_mul_f64, Definition(dst), Operand(UINT64_C(0x3FF0000000000000)), tmp);
          } else {
             bld.vop3(aco_opcode::v_min_f64, Definition(dst), src0, src1);
          }
