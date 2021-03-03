@@ -986,7 +986,6 @@ else
     '-Werror=empty-body',
     '-Werror=incompatible-pointer-types',
     '-Werror=int-conversion',
-    '-Wimplicit-fallthrough',
     '-Wmisleading-indentation',
     '-Wno-missing-field-initializers',
     '-Wno-format-truncation',
