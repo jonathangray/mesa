@@ -6,6 +6,7 @@ NOPROFILE=
 
 SRCS=	vk_debug_report.c \
 	vk_format.c \
+	vk_object.c \
 	vk_util.c
 
 SRCS+=	vk_enum_to_str.c

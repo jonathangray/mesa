@@ -12,10 +12,14 @@ SRCS=	anon_file.c \
 	dag.c \
 	debug.c \
 	disk_cache.c \
+	disk_cache_os.c \
 	double.c \
 	fast_idiv_by_const.c \
 	half_float.c \
 	hash_table.c \
+	u_idalloc.c \
+	log.c \
+	memstream.c \
 	mesa-sha1.c \
 	os_file.c \
 	os_misc.c \

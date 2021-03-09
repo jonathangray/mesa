@@ -57,7 +57,6 @@ if cpp.get_id() != 'msvc'
   cpp_args_addrlib += '-Wno-unused-variable'
   cpp_args_addrlib += '-Wno-unused-local-typedefs'
   cpp_args_addrlib += '-Wno-unused-but-set-variable'
-  cpp_args_addrlib += '-Wno-maybe-uninitialized'
 endif
 
 libamdgpu_addrlib = static_library(

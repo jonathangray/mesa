@@ -10,6 +10,7 @@ SRCS=	aco_dead_code_analysis.cpp \
 	aco_instruction_selection_setup.cpp \
 	aco_interface.cpp \
 	aco_assembler.cpp \
+	aco_form_hard_clauses.cpp \
 	aco_insert_exec_mask.cpp \
 	aco_insert_NOPs.cpp \
 	aco_insert_waitcnt.cpp \
@@ -34,7 +35,7 @@ SRCS+=	aco_opcodes.cpp
 .include "../Makefile.inc"
 
 CFLAGS+=	${C_VIS_ARGS}
-CXXFLAGS+=	${CXX_VIS_ARGS} ${PICFLAG}
+CXXFLAGS+=	${CXX_VIS_ARGS} ${PICFLAG} -fno-exceptions -fno-rtti
 
 LLVM_CXXFLAGS!= llvm-config --cxxflags
 CXXFLAGS+=	${LLVM_CXXFLAGS}

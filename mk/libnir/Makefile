@@ -18,6 +18,7 @@ SRCS=	nir.c \
 	nir_gather_xfb_info.c \
 	nir_gs_count_vertices.c \
 	nir_inline_functions.c \
+	nir_inline_uniforms.c \
 	nir_instr_set.c \
 	nir_linking_helpers.c \
 	nir_liveness.c \
@@ -32,10 +33,13 @@ SRCS=	nir.c \
 	nir_lower_bool_to_bitsize.c \
 	nir_lower_bool_to_float.c \
 	nir_lower_bool_to_int32.c \
+	nir_lower_cl_images_to_tex.c \
 	nir_lower_clamp_color_outputs.c \
 	nir_lower_clip.c \
 	nir_lower_clip_cull_distance_arrays.c \
+	nir_lower_clip_disable.c \
 	nir_lower_clip_halfz.c \
+	nir_lower_convert_alu_types.c \
 	nir_lower_variable_initializers.c \
 	nir_lower_discard_to_demote.c \
 	nir_lower_double_ops.c \
@@ -44,8 +48,10 @@ SRCS=	nir.c \
 	nir_lower_flatshade.c \
 	nir_lower_flrp.c \
 	nir_lower_fragcoord_wtrans.c \
+	nir_lower_fragcolor.c \
 	nir_lower_frexp.c \
 	nir_lower_global_vars_to_local.c \
+	nir_lower_goto_ifs.c
 	nir_lower_gs_intrinsics.c \
 	nir_lower_load_const_to_scalar.c \
 	nir_lower_locals_to_regs.c \
@@ -60,12 +66,16 @@ SRCS=	nir.c \
 	nir_lower_io_to_temporaries.c \
 	nir_lower_io_to_scalar.c \
 	nir_lower_io_to_vector.c \
+	nir_lower_multiview.c \
 	nir_lower_mediump_outputs.c \
+	nir_lower_memcpy.c \
+	nir_lower_memory_model.c \
 	nir_lower_non_uniform_access.c \
 	nir_lower_packing.c \
 	nir_lower_passthrough_edgeflags.c \
 	nir_lower_patch_vertices.c \
 	nir_lower_phis_to_scalar.c \
+	nir_lower_pntc_ytransform.c \
 	nir_lower_point_size.c \
 	nir_lower_point_size_mov.c \
 	nir_lower_regs_to_ssa.c \
@@ -81,10 +91,13 @@ SRCS=	nir.c \
 	nir_lower_vars_to_ssa.c \
 	nir_lower_var_copies.c \
 	nir_lower_vec_to_movs.c \
+	nir_lower_vec3_to_vec4.c \
 	nir_lower_viewport_transform.c \
 	nir_lower_wpos_center.c \
 	nir_lower_wpos_ytransform.c \
+	nir_lower_wrmasks.c \
 	nir_lower_bit_size.c \
+	nir_lower_ubo_vec4.c \
 	nir_lower_uniforms_to_ubo.c \
 	nir_metadata.c \
 	nir_move_vec_src_uses_to_dest.c \
@@ -109,14 +122,16 @@ SRCS=	nir.c \
 	nir_opt_large_constants.c \
 	nir_opt_load_store_vectorize.c \
 	nir_opt_loop_unroll.c \
+	nir_opt_memcpy.c \
 	nir_opt_move.c \
 	nir_opt_peephole_select.c \
 	nir_opt_rematerialize_compares.c \
 	nir_opt_remove_phis.c \
-	nir_opt_shrink_load.c \
+	nir_opt_shrink_vectors.c \
 	nir_opt_sink.c \
 	nir_opt_trivial_continues.c \
 	nir_opt_undef.c \
+	nir_opt_uniform_atomics.c \
 	nir_opt_vectorize.c \
 	nir_phi_builder.c \
 	nir_print.c \
@@ -135,6 +150,8 @@ SRCS=	nir.c \
 	nir_validate.c \
 	nir_worklist.c \
 	gl_spirv.c \
+	nir_load_libclc.c \
+	nir_lower_libclc.c \
 	spirv_to_nir.c \
 	vtn_alu.c \
 	vtn_amd.c \

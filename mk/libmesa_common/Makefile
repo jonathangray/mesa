@@ -23,7 +23,6 @@ SRCS=	arbprogparse.c \
 	prog_to_nir.c \
 	accum.c \
 	api_arrayelt.c \
-	api_loopback.c \
 	arbprogram.c \
 	arrayobj.c \
 	atifragshader.c \
@@ -75,6 +74,7 @@ SRCS=	arbprogparse.c \
 	glspirv.c \
 	glthread.c \
 	glthread_bufferobj.c \
+	glthread_draw.c \
 	glthread_shaderobj.c \
 	glthread_varray.c \
 	hash.c \

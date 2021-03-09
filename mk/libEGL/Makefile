@@ -11,7 +11,6 @@ SRCS=	eglapi.c \
 	eglcurrent.c \
 	egldevice.c \
 	egldisplay.c \
-	egldriver.c \
 	eglglobals.c \
 	eglimage.c \
 	egllog.c \
@@ -22,6 +21,7 @@ SRCS=	eglapi.c \
 SRCS+=	egl_dri2.c \
 	platform_device.c \
 	platform_drm.c \
+	platform_surfaceless.c \
 	platform_x11.c
 .endif
 

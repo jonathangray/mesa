@@ -8,9 +8,10 @@ SRCS=	gen_aux_map.c \
 	gen_batch_decoder.c \
 	gen_decoder.c \
 	gen_disasm.c \
+	gen_gem.c \
 	gen_l3_config.c \
 	gen_urb_config.c \
-	intel_log.c
+	gen_uuid.c
 
 .include "../Makefile.inc"
 

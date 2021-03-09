@@ -96,6 +96,7 @@ SRCS=	cso_cache.c \
 	tgsi_aa_point.c \
 	tgsi_build.c \
 	tgsi_dump.c \
+	tgsi_dynamic_indexing.c \
 	tgsi_exec.c \
 	tgsi_emulate.c \
 	tgsi_from_mesa.c \
@@ -112,13 +113,13 @@ SRCS=	cso_cache.c \
 	tgsi_two_side.c \
 	tgsi_ureg.c \
 	tgsi_util.c \
+	tgsi_vpos.c \
 	translate.c \
 	translate_cache.c \
 	translate_generic.c \
 	translate_sse.c \
 	u_async_debug.c \
 	u_bitmask.c \
-	u_blit.c \
 	u_blitter.c \
 	u_cache.c \
 	u_compute.c \
@@ -126,7 +127,6 @@ SRCS=	cso_cache.c \
 	u_debug_flush.c \
 	u_debug_image.c \
 	u_debug_refcnt.c \
-	u_debug_symbol.c \
 	u_dl.c \
 	u_draw.c \
 	u_draw_quad.c \
@@ -137,7 +137,6 @@ SRCS=	cso_cache.c \
 	u_handle_table.c \
 	u_hash_table.c \
 	u_helpers.c \
-	u_idalloc.c \
 	u_index_modify.c \
 	u_linear.c \
 	u_live_shader_cache.c \
@@ -162,6 +161,7 @@ SRCS=	cso_cache.c \
 	u_upload_mgr.c \
 	u_vbuf.c \
 	tgsi_to_nir.c \
+	nir_to_tgsi.c \
 	nir_draw_helpers.c
 
 SRCS+=	u_debug_stack.c \

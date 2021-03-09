@@ -60,10 +60,6 @@ all:
 	    --only-set -m size_h --header-tag _INDIRECT_SIZE_H_ \
 	    > src/mapi/glapi/gen/indirect_size.h
 	mkdir -p src/util/xmlpool
-	${PYTHON} ${MESA_SRC}/src/util/xmlpool/gen_xmlpool.py \
-	    --template ${MESA_SRC}/src/util/xmlpool/t_options.h \
-	    --output src/util/xmlpool/options.h \
-	    --localedir src/util/xmlpool --languages ca es de nl sv fr
 	${PYTHON} ${MESA_SRC}/src/util/format_srgb.py \
 	    > src/util/format_srgb.c
 	${PYTHON} ${MESA_SRC}/src/compiler/nir/nir_opcodes_h.py \
@@ -74,7 +70,7 @@ all:
 	    --outdir src/compiler/nir
 	${PYTHON} ${MESA_SRC}/src/compiler/glsl/ir_expression_operation.py \
 	    enum > src/compiler/ir_expression_operation.h
-.for GEN in 4 45 5 6 7 75 8 9 10 11 12
+.for GEN in 4 45 5 6 7 75 8 9 11 12
 	${PYTHON} ${MESA_SRC}/src/intel/genxml/gen_pack_header.py \
 	    ${MESA_SRC}/src/intel/genxml/gen${GEN}.xml \
 	    > src/intel/genxml/gen${GEN}_pack.h
@@ -88,7 +84,6 @@ all:
 	    ${MESA_SRC}/src/intel/genxml/gen75.xml \
 	    ${MESA_SRC}/src/intel/genxml/gen8.xml \
 	    ${MESA_SRC}/src/intel/genxml/gen9.xml \
-	    ${MESA_SRC}/src/intel/genxml/gen10.xml \
 	    ${MESA_SRC}/src/intel/genxml/gen11.xml \
 	    ${MESA_SRC}/src/intel/genxml/gen12.xml \
 	    -o src/intel/genxml/genX_bits.h
@@ -165,7 +160,6 @@ all:
 	    ${MESA_SRC}/src/intel/genxml/gen75.xml \
 	    ${MESA_SRC}/src/intel/genxml/gen8.xml \
 	    ${MESA_SRC}/src/intel/genxml/gen9.xml \
-	    ${MESA_SRC}/src/intel/genxml/gen10.xml \
 	    ${MESA_SRC}/src/intel/genxml/gen11.xml \
 	    ${MESA_SRC}/src/intel/genxml/gen12.xml \
 	    > src/intel/genxml/genX_xml.h
@@ -187,7 +181,6 @@ all:
 	    ${MESA_SRC}/src/intel/perf/oa-cflgt3.xml \
 	    ${MESA_SRC}/src/intel/perf/oa-bxt.xml \
 	    ${MESA_SRC}/src/intel/perf/oa-glk.xml \
-	    ${MESA_SRC}/src/intel/perf/oa-cnl.xml \
 	    ${MESA_SRC}/src/intel/perf/oa-icl.xml \
 	    ${MESA_SRC}/src/intel/perf/oa-lkf.xml \
 	    ${MESA_SRC}/src/intel/perf/oa-tgl.xml

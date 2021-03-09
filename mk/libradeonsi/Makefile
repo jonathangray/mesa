@@ -14,6 +14,7 @@ SRCS=	cik_sdma.c \
 	si_compute_prim_discard.c \
 	si_compute_blit.c \
 	si_cp_dma.c \
+	si_cp_reg_shadowing.c \
 	si_debug.c \
 	si_descriptors.c \
 	si_dma_cs.c \
@@ -48,6 +49,7 @@ SRCS=	cik_sdma.c \
 	radeon_uvd.c \
 	radeon_vcn_enc_1_2.c \
 	radeon_vcn_enc_2_0.c \
+	radeon_vcn_enc_3_0.c \
 	radeon_vcn_enc.c \
 	radeon_vcn_dec_jpeg.c \
 	radeon_vcn_dec.c \

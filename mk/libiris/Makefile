@@ -13,6 +13,7 @@ SRCS=	iris_batch.c \
 	iris_context.c \
 	iris_draw.c \
 	iris_fence.c \
+	iris_fine_fence.c \
 	iris_formats.c \
 	iris_monitor.c \
 	iris_perf.c \
