@@ -27,7 +27,8 @@ CFLAGS+=	${C_VIS_ARGS}
 CXXFLAGS+=	${CXX_VIS_ARGS}
 CPPFLAGS+=	-I${MESA_SRC}/src/gallium/auxiliary/vl \
 		-I${MESA_SRC}/src/gallium/include \
-		-I${MESA_SRC}/src/gallium/auxiliary
+		-I${MESA_SRC}/src/gallium/auxiliary \
+		-I${MESA_SRC}/src/util
 
 install:
 

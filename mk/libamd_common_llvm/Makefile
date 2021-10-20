@@ -21,6 +21,7 @@ CPPFLAGS+=	-I${MESA_SRC}/src/gallium/include \
 		-I${MESA_SRC}/src/amd/common \
 		-I${MESA_SRC}/src/mesa \
 		-I${MESA_SRC}/src/compiler \
+		-I${MESA_SRC}/src/compiler/nir \
 		-I${MESA_SRC}/generated/src/compiler/nir \
 		-I${MESA_SRC}/generated/src/amd/common
 

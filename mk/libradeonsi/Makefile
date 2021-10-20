@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.2 2021/07/22 11:10:12 jsg Exp $
+#	$OpenBSD: Makefile,v 1.3 2022/02/24 02:29:49 jsg Exp $
 
 LIB=	radeonsi
 
@@ -10,7 +10,6 @@ SRCS=	gfx10_query.c \
 	si_buffer.c \
 	si_clear.c \
 	si_compute.c \
-	si_compute_prim_discard.c \
 	si_compute_blit.c \
 	si_cp_dma.c \
 	si_cp_reg_shadowing.c \
@@ -24,7 +23,10 @@ SRCS=	gfx10_query.c \
 	si_pipe.c \
 	si_pm4.c \
 	si_query.c \
+	si_nir_optim.c \
+	si_sdma_copy_image.c \
 	si_shader.c \
+	si_shader_info.c \
 	si_shader_llvm.c \
 	si_shader_llvm_gs.c \
 	si_shader_llvm_ps.c \
@@ -37,9 +39,8 @@ SRCS=	gfx10_query.c \
 	si_sqtt.c \
 	si_state.c \
 	si_state_binning.c \
-	si_state_draw.cpp \
 	si_state_msaa.c \
-	si_state_shaders.c \
+	si_state_shaders.cpp \
 	si_state_streamout.c \
 	si_state_viewport.c \
 	si_test_blit.c \
@@ -71,6 +72,7 @@ CPPFLAGS+=	-DGALLIUM_RADEONSI \
 		-I${MESA_SRC}/src/gallium/auxiliary \
 		-I${MESA_SRC}/src/gallium/drivers \
 		-I${MESA_SRC}/src/mesa \
+		-I${MESA_SRC}/src/util \
 		-I${MESA_SRC}/src/amd/common \
 		-I${MESA_SRC}/src/amd/llvm \
 		-I${MESA_SRC}/src/compiler/nir \

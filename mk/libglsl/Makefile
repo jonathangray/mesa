@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.3 2021/07/22 11:10:09 jsg Exp $
+#	$OpenBSD: Makefile,v 1.4 2022/02/24 02:29:48 jsg Exp $
 
 .include <bsd.xconf.mk>
 
@@ -82,7 +82,6 @@ SRCS=	ast_array_index.cpp \
 	lower_precision.cpp \
 	lower_subroutine.cpp \
 	lower_tess_level.cpp \
-	lower_texture_projection.cpp \
 	lower_variable_index_to_cond_assign.cpp \
 	lower_vec_index_to_cond_assign.cpp \
 	lower_vec_index_to_swizzle.cpp \
@@ -112,11 +111,9 @@ SRCS=	ast_array_index.cpp \
 	opt_if_simplification.cpp \
 	opt_minmax.cpp \
 	opt_rebalance_tree.cpp \
-	opt_redundant_jumps.cpp \
 	opt_structure_splitting.cpp \
 	opt_swizzle.cpp \
 	opt_tree_grafting.cpp \
-	opt_vectorize.cpp \
 	propagate_invariance.cpp \
 	s_expression.cpp \
 	string_to_uint_map.cpp \

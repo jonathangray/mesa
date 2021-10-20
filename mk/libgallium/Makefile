@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.3 2021/07/22 11:10:09 jsg Exp $
+#	$OpenBSD: Makefile,v 1.4 2022/02/24 02:29:48 jsg Exp $
 
 .include "../Makefile.inc"
 
@@ -33,7 +33,6 @@ SRCS=	cso_cache.c \
 	draw_pt.c \
 	draw_pt_emit.c \
 	draw_pt_fetch.c \
-	draw_pt_fetch_emit.c \
 	draw_pt_fetch_shade_emit.c \
 	draw_pt_fetch_shade_pipeline.c \
 	draw_pt_post_vs.c \
@@ -68,7 +67,6 @@ SRCS=	cso_cache.c \
 	hud_sensors_temp.c \
 	hud_driver_query.c \
 	hud_fps.c \
-	u_primconvert.c \
 	os_process.c \
 	pb_buffer_fenced.c \
 	pb_bufmgr_cache.c \
@@ -123,19 +121,17 @@ SRCS=	cso_cache.c \
 	u_blitter.c \
 	u_cache.c \
 	u_compute.c \
-	u_debug_describe.c \
 	u_debug_flush.c \
 	u_debug_image.c \
-	u_debug_refcnt.c \
 	u_dl.c \
 	u_draw.c \
 	u_draw_quad.c \
+	u_driconf.c \
 	u_dump_defines.c \
 	u_dump_state.c \
 	u_framebuffer.c \
 	u_gen_mipmap.c \
 	u_handle_table.c \
-	u_hash_table.c \
 	u_helpers.c \
 	u_index_modify.c \
 	u_linear.c \
@@ -158,16 +154,18 @@ SRCS=	cso_cache.c \
 	u_transfer.c \
 	u_transfer_helper.c \
 	u_threaded_context.c \
+	u_trace_gallium.c \
 	u_upload_mgr.c \
 	u_vbuf.c \
+	u_vertex_state_cache.c \
 	tgsi_to_nir.c \
 	nir_to_tgsi.c \
-	nir_draw_helpers.c
+	nir_draw_helpers.c \
+	nir_helpers.c
 
-SRCS+=	renderonly.c
-
-SRCS+=	u_indices_gen.c \
-	u_unfilled_gen.c
+SRCS+=	renderonly.c \
+	tr_util.c \
+	u_tracepoints.c
 
 .if ${WITH_LLVM} == "yes"
 SRCS+=	lp_bld_arit.c \
@@ -194,6 +192,7 @@ SRCS+=	lp_bld_arit.c \
 	lp_bld_logic.c \
 	lp_bld_misc.cpp \
 	lp_bld_nir.c \
+	lp_bld_nir_aos.c \
 	lp_bld_nir_soa.c \
 	lp_bld_pack.c \
 	lp_bld_printf.c \
@@ -253,6 +252,8 @@ CPPFLAGS+=	-I${MESA_SRC}/src/gallium/include \
 		-I${MESA_SRC}/src/gallium/auxiliary/util \
 		-I${MESA_SRC}/src/gallium/auxiliary/nir \
 		-I${MESA_SRC}/src/compiler/nir \
+		-I${MESA_SRC}/src/util \
+		-I${MESA_SRC}/generated/src/gallium/auxiliary \
 		-I${MESA_SRC}/generated/src/compiler/nir
 #llvm
 CPPFLAGS+=	-I${MESA_SRC}/src/gallium/auxiliary/gallivm \

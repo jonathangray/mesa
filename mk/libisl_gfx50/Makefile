@@ -5,7 +5,8 @@ LIB=	isl_gfx${GFX}
 
 NOPROFILE=
 
-SRCS=	isl_emit_depth_stencil.c \
+SRCS=	isl_emit_cpb.c \
+	isl_emit_depth_stencil.c \
 	isl_surface_state.c
 
 .include "../Makefile.inc"

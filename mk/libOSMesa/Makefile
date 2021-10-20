@@ -23,8 +23,7 @@ obj: _xenocara_obj
 .include <bsd.lib.mk>
 .include <bsd.xorg.mk>
 
-SLIBS=	libmesa_gallium \
-	libmesa_common \
+SLIBS=	libmesa \
 	libmesa_util \
 	libmesa_format \
 	libglsl \

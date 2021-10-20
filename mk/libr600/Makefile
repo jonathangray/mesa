@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.3 2021/07/22 11:10:12 jsg Exp $
+#	$OpenBSD: Makefile,v 1.4 2022/02/24 02:29:49 jsg Exp $
 
 LIB=	r600
 
@@ -81,7 +81,9 @@ SRCS=	compute_memory_pool.c \
 	sfn_ir_to_assembly.cpp \
 	sfn_liverange.cpp \
 	sfn_nir.cpp \
+	sfn_nir_legalize_image_load_store.cpp \
 	sfn_nir_lower_64bit.cpp \
+	sfn_nir_lower_alu.cpp \
 	sfn_nir_lower_fs_out_to_vector.cpp \
 	sfn_nir_lower_tess_io.cpp \
 	sfn_nir_vectorize_vs_inputs.c \
@@ -98,8 +100,6 @@ SRCS=	compute_memory_pool.c \
 	sfn_valuepool.cpp \
 	sfn_vertexstageexport.cpp
 
-SRCS+=	sfn_nir_algebraic.c
-
 .include "../Makefile.inc"
 
 CFLAGS+=	${C_VIS_ARGS}
@@ -110,6 +110,7 @@ CPPFLAGS+=	-DGALLIUM_R600 \
 		-I${MESA_SRC}/src/gallium/auxiliary \
 		-I${MESA_SRC}/src/gallium/drivers \
 		-I${MESA_SRC}/src/mesa \
+		-I${MESA_SRC}/src/util \
 		-I${MESA_SRC}/src/amd/common \
 		-I${MESA_SRC}/src/compiler/nir \
 		-I${MESA_SRC}/generated/src/gallium/drivers/r600 \

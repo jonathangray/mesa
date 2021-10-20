@@ -2,7 +2,7 @@
 .include <bsd.own.mk>
 
 CFLAGS+= \
-	-std=c99 \
+	-std=c11 \
 	-Wall \
 	-Winvalid-pch \
 	-Werror=empty-body \
@@ -11,6 +11,7 @@ CFLAGS+= \
 	-Werror=int-conversion \
 	-Werror=missing-prototypes \
 	-Werror=return-type \
+	-Werror=thread-safety \
 	-Wno-missing-field-initializers \
 	-Wno-typedef-redefinition \
 	-fno-math-errno \
@@ -23,15 +24,17 @@ CFLAGS+= \
 CXXFLAGS+= \
 	-std=c++14 \
 	-Wall \
-	-Winvalid-pch \
 	-Werror=empty-body \
 	-Werror=format \
 	-Werror=return-type \
+	-Wformat-security \
+	-Winvalid-pch \
+	-Wno-microsoft-enum-value \
 	-Wno-missing-field-initializers \
 	-Wno-non-virtual-dtor \
+	-Wno-unused-local-typedefs \
 	-fno-math-errno \
 	-fno-trapping-math \
-	-Wformat-security \
 	-Qunused-arguments
 
 .if ${COMPILER_VERSION:L} != "clang"
@@ -59,6 +62,7 @@ CPPFLAGS+= \
 	-DGLX_DIRECT_RENDERING \
 	-DGLX_INDIRECT_RENDERING \
 	-DGLX_USE_DRM \
+	-DHAS_SCHED_H \
 	-DHAVE_ARC4RANDOM_BUF \
 	-DHAVE_COMPRESSION \
 	-DHAVE_DIRENT_D_TYPE \
@@ -67,7 +71,6 @@ CPPFLAGS+= \
 	-DHAVE_DL_ITERATE_PHDR \
 	-DHAVE_DRM_PLATFORM \
 	-DHAVE_ENDIAN_H \
-	-DHAVE_EXECINFO_H \
 	-DHAVE_FLOCK \
 	-DHAVE_FUNC_ATTRIBUTE_ALIAS \
 	-DHAVE_FUNC_ATTRIBUTE_CONST \
@@ -110,11 +113,18 @@ CPPFLAGS+= \
 	-DNDEBUG \
 	-DUSE_GCC_ATOMIC_BUILTINS \
 	-DPACKAGE_BUGREPORT=\"bugs@openbsd.org\" \
+	-DVK_USE_PLATFORM_DISPLAY_KHR \
 	-D_FILE_OFFSET_BITS=64 \
 	-D_ISOC11_SOURCE \
 	-D__STDC_CONSTANT_MACROS \
 	-D__STDC_FORMAT_MACROS \
 	-D__STDC_LIMIT_MACROS
+
+# not CPPFLAGS as breaks aco c++ files
+CFLAGS+= \
+	-DVK_USE_PLATFORM_XCB_KHR \
+	-DVK_USE_PLATFORM_XLIB_KHR \
+	-DVK_USE_PLATFORM_XLIB_XRANDR_EXT
 
 .if ${XENOCARA_BUILD_DRI3:L} == "yes"
 CPPFLAGS+= \
@@ -145,8 +155,10 @@ CPPFLAGS+=	-DMISSING_64BIT_ATOMICS
 .if ${MACHINE_ARCH} == "i386"
 CPPFLAGS+=	-DUSE_X86_ASM -DUSE_MMX_ASM -DUSE_3DNOW_ASM -DUSE_SSE_ASM \
 		-DUSE_SSE41
+CPPFLAGS+=	-DHAVE_CET_H
 .elif ${MACHINE_ARCH} == "amd64"
 CPPFLAGS+=	-DUSE_X86_64_ASM -DUSE_SSE41
+CPPFLAGS+=	-DHAVE_CET_H
 .elif ${MACHINE_ARCH} == "arm"
 CPPFLAGS+=	-DUSE_ARM_ASM
 .elif ${MACHINE_ARCH} == "aarch64"
@@ -155,13 +167,11 @@ CPPFLAGS+=	-DUSE_AARCH64_ASM
 CPPFLAGS+=	-DUSE_SPARC_ASM
 .endif
 
-WITH_DRI_R100=no
-WITH_DRI_R200=no
-WITH_DRI_I915=no
-WITH_DRI_I965=no
 WITH_GALLIUM_R300=no
 WITH_GALLIUM_R600=no
 WITH_GALLIUM_RADEONSI=no
+WITH_GALLIUM_I915=no
+WITH_GALLIUM_CROCUS=no
 WITH_GALLIUM_IRIS=no
 WITH_AMD_VK=no
 WITH_INTEL_VK=no
@@ -186,8 +196,6 @@ WITH_SSE41=yes
     ${MACHINE} == "loongson" || ${MACHINE} == "macppc" || \
     ${MACHINE} == "powerpc64" || ${MACHINE} == "riscv64" || \
     ${MACHINE} == "sparc64"
-WITH_DRI_R100=yes
-WITH_DRI_R200=yes
 WITH_GALLIUM_R300=yes
 WITH_GALLIUM_R600=yes
 .endif
@@ -199,8 +207,8 @@ WITH_AMD_VK=yes
 .endif
 
 .if ${MACHINE} == "amd64" || ${MACHINE} == "i386"
-WITH_DRI_I915=yes
-WITH_DRI_I965=yes
+WITH_GALLIUM_I915=yes
+WITH_GALLIUM_CROCUS=yes
 WITH_GALLIUM_IRIS=yes
 WITH_INTEL_VK=yes
 .endif

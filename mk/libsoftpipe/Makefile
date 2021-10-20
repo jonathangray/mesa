@@ -18,7 +18,6 @@ SRCS=	sp_buffer.c \
 	sp_quad_depth_test.c \
 	sp_quad_fs.c \
 	sp_quad_pipe.c \
-	sp_quad_stipple.c \
 	sp_query.c \
 	sp_screen.c \
 	sp_setup.c \

@@ -10,7 +10,9 @@ SRCS=	dri_context.c \
 	dri_drawable.c \
 	dri_helpers.c \
 	dri_query_renderer.c \
-	dri_screen.c
+	dri_screen.c \
+	dri_util.c \
+	utils.c
 
 .if ${XENOCARA_BUILD_DRI:L} == "yes"
 SRCS+=	drisw.c \

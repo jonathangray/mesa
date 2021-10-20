@@ -25,7 +25,8 @@ SRCS=	iris_batch.c \
 	iris_resolve.c \
 	iris_resource.c \
 	iris_screen.c \
-	iris_disk_cache.c
+	iris_disk_cache.c \
+	iris_utrace.c
 
 .include "../Makefile.inc"
 
@@ -38,6 +39,9 @@ CPPFLAGS+=	-DGALLIUM_IRIS \
 		-I${MESA_SRC}/src/mesa \
 		-I${MESA_SRC}/src/mapi \
 		-I${MESA_SRC}/src/intel \
+		-I${MESA_SRC}/src/compiler/nir \
+		-I${MESA_SRC}/generated/src \
+		-I${MESA_SRC}/generated/src/intel \
 		-I${MESA_SRC}/generated/src/compiler/nir
 
 install:
