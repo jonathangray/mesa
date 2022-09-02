@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.2 2020/08/27 05:02:25 jsg Exp $
+#	$OpenBSD: Makefile,v 1.3 2022/09/02 05:46:37 jsg Exp $
 
 LIB=	addrlib
 

@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.1 2021/07/22 11:10:12 jsg Exp $
+#	$OpenBSD: Makefile,v 1.2 2022/09/02 05:46:40 jsg Exp $
 
 GFX=	90
 LIB=	isl_gfx${GFX}

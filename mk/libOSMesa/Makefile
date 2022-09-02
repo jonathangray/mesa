@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.3 2021/07/22 11:10:09 jsg Exp $
+#	$OpenBSD: Makefile,v 1.4 2022/09/02 05:46:37 jsg Exp $
 
 LIB=	OSMesa
 

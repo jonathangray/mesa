@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.1 2022/02/24 03:02:07 jsg Exp $
+#	$OpenBSD: Makefile,v 1.2 2022/09/02 05:46:40 jsg Exp $
 
 GEN=	7
 LIB=	radeonsi_gfx${GEN}

@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.5 2022/02/25 06:23:08 jsg Exp $
+#	$OpenBSD: Makefile,v 1.6 2022/09/02 05:46:37 jsg Exp $
 
 .include <bsd.xconf.mk>
 

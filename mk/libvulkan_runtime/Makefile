@@ -1,4 +1,4 @@
-#	$OpenBSD$
+#	$OpenBSD: Makefile,v 1.1 2022/09/02 05:46:41 jsg Exp $
 
 LIB=	vulkan_runtime
 

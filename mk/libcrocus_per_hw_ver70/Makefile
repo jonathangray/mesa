@@ -1,4 +1,4 @@
-#	$OpenBSD$
+#	$OpenBSD: Makefile,v 1.1 2022/09/02 05:46:38 jsg Exp $
 
 GEN=	70
 LIB=	crocus_per_hw_ver${GEN}

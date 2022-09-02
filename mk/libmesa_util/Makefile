@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.4 2022/02/25 06:23:08 jsg Exp $
+#	$OpenBSD: Makefile,v 1.7 2022/09/02 05:46:40 jsg Exp $
 
 LIB=	mesa_util
 

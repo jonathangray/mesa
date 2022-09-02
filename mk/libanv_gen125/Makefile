@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.1 2021/07/22 11:10:09 jsg Exp $
+#	$OpenBSD: Makefile,v 1.2 2022/09/02 05:46:37 jsg Exp $
 
 GEN=	125
 LIB=	anv_gen${GEN}

@@ -1,4 +1,4 @@
-#	$OpenBSD: Makefile,v 1.6 2022/02/24 02:29:49 jsg Exp $
+#	$OpenBSD: Makefile,v 1.7 2022/09/02 05:46:41 jsg Exp $
 
 LIB=	vulkan_radeon
 
