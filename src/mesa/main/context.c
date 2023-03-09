@@ -1507,6 +1507,11 @@ _mesa_make_current( struct gl_context *newCtx,
       }
    }
 
+   /* Call this periodically to detect when the user has begun using
+    * GL rendering from multiple threads.
+    */
+   _glapi_check_multithread();
+
    if (!newCtx) {
       _glapi_set_dispatch(NULL);  /* none current */
       /* We need old ctx to correctly release Draw/ReadBuffer
