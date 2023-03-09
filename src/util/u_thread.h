@@ -191,4 +191,46 @@ util_semaphore_wait(util_semaphore *sema)
 }
 #endif
 
+/*
+ * Thread-specific data.
+ */
+
+typedef struct {
+   tss_t key;
+   int initMagic;
+} pipe_tsd;
+
+
+#define PIPE_TSD_INIT_MAGIC 0xff8adc98
+
+
+static inline void
+pipe_tsd_init(pipe_tsd *tsd)
+{
+   if (tss_create(&tsd->key, NULL/*free*/) != 0) {
+      exit(-1);
+   }
+   tsd->initMagic = PIPE_TSD_INIT_MAGIC;
+}
+
+static inline void *
+pipe_tsd_get(pipe_tsd *tsd)
+{
+   if (tsd->initMagic != (int) PIPE_TSD_INIT_MAGIC) {
+      pipe_tsd_init(tsd);
+   }
+   return tss_get(tsd->key);
+}
+
+static inline void
+pipe_tsd_set(pipe_tsd *tsd, void *value)
+{
+   if (tsd->initMagic != (int) PIPE_TSD_INIT_MAGIC) {
+      pipe_tsd_init(tsd);
+   }
+   if (tss_set(tsd->key, value) != 0) {
+      exit(-1);
+   }
+}
+
 #endif /* U_THREAD_H_ */
