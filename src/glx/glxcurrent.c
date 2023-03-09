@@ -133,6 +133,8 @@ MakeContextCurrent(Display * dpy, GLXDrawable draw,
       return GL_FALSE;
    }
 
+   _glapi_check_multithread();
+
    __glXLock();
    if (oldGC == gc &&
        gc->currentDrawable == draw && gc->currentReadable == read) {
