@@ -111,6 +111,8 @@ MakeContextCurrent(Display * dpy, GLXDrawable draw,
       return GL_FALSE;
    }
 
+   _glapi_check_multithread();
+
    /* can't have only one be 0 */
    if (!!draw != !!read) {
       __glXSendError(dpy, BadMatch, None, opcode, True);
