@@ -94,10 +94,10 @@ extern void (*__glapi_noop_table[])(void);
  */
 /*@{*/
 
-__THREAD_INITIAL_EXEC struct _glapi_table *_glapi_tls_Dispatch
-   = (struct _glapi_table *) table_noop_array;
+__THREAD_INITIAL_EXEC struct _glapi_table *u_current_table
+    = (struct _glapi_table *) table_noop_array;
 
-__THREAD_INITIAL_EXEC void *_glapi_tls_Context;
+__THREAD_INITIAL_EXEC void *u_current_context;
 
 /*@}*/
 
@@ -107,9 +107,9 @@ __THREAD_INITIAL_EXEC void *_glapi_tls_Context;
  * void from the real context pointer type.
  */
 void
-_glapi_set_context(void *ptr)
+u_current_set_context(const void *ptr)
 {
-   _glapi_tls_Context = ptr;
+   u_current_context = (void *) ptr;
 }
 
 /**
@@ -118,9 +118,9 @@ _glapi_set_context(void *ptr)
  * void to the real context pointer type.
  */
 void *
-_glapi_get_context(void)
+u_current_get_context_internal(void)
 {
-   return _glapi_tls_Context;
+   return u_current_context;
 }
 
 /**
@@ -129,21 +129,21 @@ _glapi_get_context(void)
  * table (__glapi_noop_table).
  */
 void
-_glapi_set_dispatch(struct _glapi_table *tbl)
+u_current_set_table(const struct _glapi_table *tbl)
 {
    stub_init_once();
 
    if (!tbl)
-      tbl = (struct _glapi_table *) table_noop_array;
+      tbl = (const struct _glapi_table *) table_noop_array;
 
-   _glapi_tls_Dispatch = tbl;
+   u_current_table = (struct _glapi_table *) tbl;
 }
 
 /**
  * Return pointer to current dispatch table for calling thread.
  */
 struct _glapi_table *
-_glapi_get_dispatch(void)
+u_current_get_table_internal(void)
 {
-   return _glapi_tls_Dispatch;
+   return u_current_table;
 }
