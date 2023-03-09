@@ -143,7 +143,7 @@ u_current_init_tsd(void)
  */
 static mtx_t ThreadCheckMutex = _MTX_INITIALIZER_NP;
 
-static thread_id knownID;
+static thrd_t knownID;
 
 /**
  * We should call this periodically from a function such as glXMakeCurrent
@@ -161,10 +161,10 @@ u_current_init(void)
    if (firstCall) {
       u_current_init_tsd();
 
-      knownID = util_get_thread_id();
+      knownID = thrd_current();
       firstCall = 0;
    }
-   else if (!util_thread_id_equal(knownID, util_get_thread_id())) {
+   else if (!u_thread_is_self(knownID)) {
       ThreadSafe = 1;
       u_current_set_table(NULL);
       u_current_set_context(NULL);
@@ -214,7 +214,7 @@ u_current_get_context_internal(void)
 #else
    if (ThreadSafe)
       return tss_get(u_current_context_tsd);
-   else if (!util_thread_id_equal(knownID, util_get_thread_id()))
+   else if (!u_thread_is_self(knownID))
       return NULL;
    else
       return u_current_context;
@@ -255,7 +255,7 @@ u_current_get_table_internal(void)
 #else
    if (ThreadSafe)
       return (struct _glapi_table *) tss_get(u_current_table_tsd);
-   else if (!util_thread_id_equal(knownID, util_get_thread_id()))
+   else if (!u_thread_is_self(knownID))
       return (struct _glapi_table *) table_noop_array;
    else
       return (struct _glapi_table *) u_current_table;

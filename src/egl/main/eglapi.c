@@ -347,11 +347,11 @@ _eglSetFuncName(const char *funcName, _EGLDisplay *disp, EGLenum objectType, _EG
       else if (object)
          thr->CurrentObjectLabel = object->Label;
 
-      return EGL_TRUE;
+      return;
    }
 
    _eglDebugReport(EGL_BAD_ALLOC, funcName, EGL_DEBUG_MSG_CRITICAL_KHR, NULL);
-   return EGL_FALSE;
+   return;
 }
 
 #define _EGL_FUNC_START(disp, objectType, object) \
@@ -1843,7 +1843,7 @@ eglReleaseThread(void)
       _EGLThreadInfo *t = _eglGetCurrentThread();
       _EGLContext *ctx = t->CurrentContext;
 
-      _EGL_FUNC_START(NULL, EGL_OBJECT_THREAD_KHR, NULL, EGL_FALSE);
+      _EGL_FUNC_START(NULL, EGL_OBJECT_THREAD_KHR, NULL);
 
       if (ctx) {
          _EGLDisplay *disp = ctx->Resource.Display;
