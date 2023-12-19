@@ -39,7 +39,9 @@ CPPFLAGS+=	-DGALLIUM_I915 \
 		-I${MESA_SRC}/src/gallium/auxiliary \
 		-I${MESA_SRC}/src/gallium/drivers \
 		-I${MESA_SRC}/src/mesa \
+		-I${MESA_SRC}/src/compiler \
 		-I${MESA_SRC}/src/compiler/nir \
+		-I${MESA_SRC}/generated/src/compiler \
 		-I${MESA_SRC}/generated/src/compiler/nir
 
 install:

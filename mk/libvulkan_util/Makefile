@@ -19,6 +19,7 @@ CPPFLAGS+=	-I${MESA_SRC}/src/vulkan/util \
 		-I${MESA_SRC}/src/gallium/include \
 		-I${MESA_SRC}/src/util \
 		-I${MESA_SRC}/generated/src/vulkan/util \
+		-I${MESA_SRC}/generated/src/compiler \
 		-I${MESA_SRC}/generated/src/compiler/nir \
 		-DVK_USE_PLATFORM_XCB_KHR \
 		-DVK_USE_PLATFORM_XLIB_KHR \

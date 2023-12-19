@@ -63,6 +63,7 @@ SLIBS=	libintel_compiler \
 	libisl_gfx110 \
 	libisl_gfx120 \
 	libisl_gfx125 \
+	libisl_gfx200 \
 	libisl_tiled_memcpy \
 	libisl_tiled_memcpy_sse41 \
 	libblorp \
@@ -82,7 +83,7 @@ LDADD+=		-Wl,--as-needed -Wl,--allow-shlib-undefined -Wl,--start-group
 
 LDADD+=		-Wl,--whole-archive
 LDADD+=		${.CURDIR}/../libanv_common/${__objdir}/libanv_common.a
-.for gen in 70 75 80 90 110 120 125
+.for gen in 70 75 80 90 110 120 125 200
 LDADD+=		${.CURDIR}/../libanv_gen${gen}/${__objdir}/libanv_gen${gen}.a
 .endfor
 LDADD+=		${.CURDIR}/../libvulkan_util/${__objdir}/libvulkan_util.a
