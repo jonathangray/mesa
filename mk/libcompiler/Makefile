@@ -4,9 +4,10 @@ LIB=	compiler
 
 NOPROFILE=
 
-SRCS=	glsl_types.cpp \
-	nir_types.cpp \
+SRCS=	glsl_types.c \
 	shader_enums.c
+
+SRCS+=	builtin_types.c
 
 .include "../Makefile.inc"
 
@@ -25,3 +26,4 @@ obj: _xenocara_obj
 .include <bsd.xorg.mk>
 
 .PATH:	${MESA_SRC}/src/compiler
+.PATH:	${MESA_SRC}/generated/src/compiler

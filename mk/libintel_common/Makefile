@@ -16,9 +16,13 @@ SRCS=	i915_intel_engine.c \
 	intel_gem.c \
 	intel_l3_config.c \
 	intel_measure.c \
+	intel_mem.c \
 	intel_sample_positions.c \
 	intel_urb_config.c \
 	intel_uuid.c
+
+SRCS+=	intel_clflushopt.c
+CFLAGS+= -mclflushopt
 
 i915_intel_engine.c:
 	ln -s ${MESA_SRC}/src/intel/common/i915/intel_engine.c $@
@@ -33,9 +37,6 @@ xe_intel_gem.c:
 
 CFLAGS+=	${C_VIS_ARGS} ${NO_OVERRIDE_INIT_ARGS}
 CPPFLAGS+=	-I${MESA_SRC}/src/intel \
-		-I${MESA_SRC}/src/mesa \
-		-I${MESA_SRC}/src/mapi \
-		-I${MESA_SRC}/src/gallium/include \
 		-I${MESA_SRC}/src/intel/common \
 		-I${MESA_SRC}/generated/src \
 		-I${MESA_SRC}/generated/src/intel

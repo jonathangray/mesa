@@ -28,6 +28,7 @@ SRCS=	r300_blit.c \
 	r300_vs.c \
 	r300_vs_draw.c \
 	memory_pool.c \
+	nir_to_rc.c \
 	r300_fragprog.c \
 	r300_fragprog_emit.c \
 	r300_fragprog_swizzle.c \
@@ -36,6 +37,7 @@ SRCS=	r300_blit.c \
 	r3xx_vertprog_dump.c \
 	r500_fragprog.c \
 	r500_fragprog_emit.c \
+	r300_nir.c \
 	radeon_code.c \
 	radeon_compiler.c \
 	radeon_compiler_util.c \
@@ -73,6 +75,7 @@ CPPFLAGS+=	-DGALLIUM_R300 \
 		-I${MESA_SRC}/src/gallium/drivers \
 		-I${MESA_SRC}/src/mesa \
 		-I${MESA_SRC}/src/compiler/nir \
+		-I${MESA_SRC}/generated/src/compiler \
 		-I${MESA_SRC}/generated/src/compiler/nir
 
 install:

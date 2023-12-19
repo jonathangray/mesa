@@ -19,6 +19,7 @@ CPPFLAGS+=	-I${MESA_SRC}/src/intel \
 		-I${MESA_SRC}/src/gallium/include \
 		-I${MESA_SRC}/generated/src \
 		-I${MESA_SRC}/generated/src/intel/ds \
+		-I${MESA_SRC}/generated/src/compiler \
 		-I${MESA_SRC}/generated/src/compiler/nir
 
 install:

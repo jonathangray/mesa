@@ -15,9 +15,12 @@ CPPFLAGS+=	-I${MESA_SRC}/src/amd/common \
 		-I${MESA_SRC}/src/gallium/include \
 		-I${MESA_SRC}/src/gallium/auxiliary \
 		-I${MESA_SRC}/src/gallium/drivers \
+		-I${MESA_SRC}/src/gallium/drivers/radeonsi \
+		-I${MESA_SRC}/src/compiler \
 		-I${MESA_SRC}/src/compiler/nir \
 		-I${MESA_SRC}/generated/src/amd/common \
 		-I${MESA_SRC}/generated/src/compiler/nir \
+		-I${MESA_SRC}/generated/src/gallium/drivers/radeonsi \
 		-DGFX_VER=${GEN}
 
 install:

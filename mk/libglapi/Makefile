@@ -4,7 +4,6 @@ LIB=	glapi
 
 SRCS=	entry.c \
 	u_current.c \
-	u_execmem.c \
 	glapi.c \
 	stub.c \
 	table.c

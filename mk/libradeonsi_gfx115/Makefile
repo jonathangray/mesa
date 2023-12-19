@@ -1,6 +1,6 @@
-#	$OpenBSD: Makefile,v 1.2 2022/09/02 05:46:40 jsg Exp $
+#	$OpenBSD$
 
-GEN=	7
+GEN=	115
 LIB=	radeonsi_gfx${GEN}
 
 NOPROFILE=
