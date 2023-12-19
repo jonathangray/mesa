@@ -38,6 +38,7 @@ CPPFLAGS+=	-DGALLIUM_CROCUS \
 		-I${MESA_SRC}/src/compiler/nir \
 		-I${MESA_SRC}/generated/src \
 		-I${MESA_SRC}/generated/src/intel \
+		-I${MESA_SRC}/generated/src/compiler \
 		-I${MESA_SRC}/generated/src/compiler/nir
 
 install:

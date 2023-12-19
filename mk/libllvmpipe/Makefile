@@ -60,7 +60,8 @@ SRCS=	lp_bld_alpha.c \
 	lp_state_vs.c \
 	lp_surface.c \
 	lp_tex_sample.c \
-	lp_texture.c
+	lp_texture.c \
+	lp_texture_handle.c
 
 .include "../Makefile.inc"
 
@@ -71,6 +72,7 @@ CPPFLAGS+=	-I${MESA_SRC}/src/gallium/include \
 		-I${MESA_SRC}/src/gallium/drivers/llvmpipe \
 		-I${MESA_SRC}/src/compiler/nir \
 		-I${MESA_SRC}/generated/src \
+		-I${MESA_SRC}/generated/src/compiler \
 		-I${MESA_SRC}/generated/src/compiler/nir
 
 install:

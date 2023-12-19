@@ -10,6 +10,7 @@ SRCS=	radv_metro_exodus.c \
 	radv_rra_layer.c \
 	radv_sqtt_layer.c \
 	radv_meta.c \
+	radv_meta_astc_decode.c \
 	radv_meta_blit.c \
 	radv_meta_blit2d.c \
 	radv_meta_buffer.c \
@@ -29,9 +30,12 @@ SRCS=	radv_metro_exodus.c \
 	radv_nir_apply_pipeline_layout.c \
 	radv_nir_export_multiview.c \
 	radv_nir_lower_abi.c \
+	radv_nir_lower_cooperative_matrix.c \
+	radv_nir_lower_fs_barycentric.c \
 	radv_nir_lower_fs_intrinsics.c \
 	radv_nir_lower_intrinsics_early.c \
 	radv_nir_lower_io.c \
+	radv_nir_lower_poly_line_smooth.c \
 	radv_nir_lower_primitive_shading_rate.c \
 	radv_nir_lower_ray_queries.c \
 	radv_nir_lower_view_index.c \
@@ -67,7 +71,7 @@ SRCS=	radv_metro_exodus.c \
 	radv_rt_common.c \
 	radv_rt_shader.c \
 	radv_sampler.c \
-	radv_sdma_copy_image.c \
+	radv_sdma.c \
 	radv_shader.c \
 	radv_shader_args.c \
 	radv_shader_info.c \
@@ -117,6 +121,7 @@ CPPFLAGS+=	-I${MESA_SRC}/src/amd/vulkan \
 		-I${MESA_SRC}/src/mesa \
 		-I${MESA_SRC}/generated/src \
 		-I${MESA_SRC}/generated/src/util \
+		-I${MESA_SRC}/generated/src/compiler \
 		-I${MESA_SRC}/generated/src/compiler/nir \
 		-I${MESA_SRC}/generated/src/amd/common \
 		-I${MESA_SRC}/generated/src/amd/vulkan \

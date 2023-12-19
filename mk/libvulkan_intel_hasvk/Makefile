@@ -63,6 +63,7 @@ SLIBS=	libintel_compiler \
 	libisl_gfx110 \
 	libisl_gfx120 \
 	libisl_gfx125 \
+	libisl_gfx200 \
 	libisl_tiled_memcpy \
 	libisl_tiled_memcpy_sse41 \
 	libblorp \
