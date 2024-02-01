@@ -341,14 +341,18 @@ EGLBoolean
 dri2_initialize_device(_EGLDisplay *disp)
 {
    _EGLDevice *dev;
+   struct dri2_egl_display *dri2_dpy;
    const char *err;
-   struct dri2_egl_display *dri2_dpy = dri2_display_create();
+
+   dri2_dpy = calloc(1, sizeof *dri2_dpy);
    if (!dri2_dpy)
-      return EGL_FALSE;
+      return _eglError(EGL_BAD_ALLOC, "eglInitialize");
 
    /* Extension requires a PlatformDisplay - the EGLDevice. */
    dev = disp->PlatformDisplay;
 
+   dri2_dpy->fd_render_gpu = -1;
+   dri2_dpy->fd_display_gpu = -1;
    disp->Device = dev;
    disp->DriverData = (void *)dri2_dpy;
    err = "DRI2: failed to load driver";

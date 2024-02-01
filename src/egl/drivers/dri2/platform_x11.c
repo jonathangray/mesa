@@ -1506,10 +1506,14 @@ static EGLBoolean
 dri2_initialize_x11_swrast(_EGLDisplay *disp)
 {
    _EGLDevice *dev;
-   struct dri2_egl_display *dri2_dpy = dri2_display_create();
-   if (!dri2_dpy)
-      return EGL_FALSE;
+   struct dri2_egl_display *dri2_dpy;
 
+   dri2_dpy = calloc(1, sizeof *dri2_dpy);
+   if (!dri2_dpy)
+      return _eglError(EGL_BAD_ALLOC, "eglInitialize");
+
+   dri2_dpy->fd_render_gpu = -1;
+   dri2_dpy->fd_display_gpu = -1;
    if (!dri2_get_xcb_connection(disp, dri2_dpy))
       goto cleanup;
 
@@ -1596,11 +1600,14 @@ static EGLBoolean
 dri2_initialize_x11_dri3(_EGLDisplay *disp)
 {
    _EGLDevice *dev;
-   struct dri2_egl_display *dri2_dpy = dri2_display_create();
+   struct dri2_egl_display *dri2_dpy;
 
+   dri2_dpy = calloc(1, sizeof *dri2_dpy);
    if (!dri2_dpy)
-      return EGL_FALSE;
+      return _eglError(EGL_BAD_ALLOC, "eglInitialize");
 
+   dri2_dpy->fd_render_gpu = -1;
+   dri2_dpy->fd_display_gpu = -1;
    if (!dri2_get_xcb_connection(disp, dri2_dpy))
       goto cleanup;
 
@@ -1706,10 +1713,14 @@ static EGLBoolean
 dri2_initialize_x11_dri2(_EGLDisplay *disp)
 {
    _EGLDevice *dev;
-   struct dri2_egl_display *dri2_dpy = dri2_display_create();
-   if (!dri2_dpy)
-      return EGL_FALSE;
+   struct dri2_egl_display *dri2_dpy;
 
+   dri2_dpy = calloc(1, sizeof *dri2_dpy);
+   if (!dri2_dpy)
+      return _eglError(EGL_BAD_ALLOC, "eglInitialize");
+
+   dri2_dpy->fd_render_gpu = -1;
+   dri2_dpy->fd_display_gpu = -1;
    if (!dri2_get_xcb_connection(disp, dri2_dpy))
       goto cleanup;
 
