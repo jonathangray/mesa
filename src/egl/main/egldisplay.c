@@ -642,7 +642,6 @@ _EGLDisplay *
 _eglGetSurfacelessDisplay(void *native_display, const EGLAttrib *attrib_list)
 {
    _EGLDisplay *dpy;
-   _EGLDevice *dev = NULL;
 
    /* Any native display must be an EGLDeviceEXT we know about */
    if (native_display != NULL) {
@@ -658,8 +657,8 @@ _eglGetSurfacelessDisplay(void *native_display, const EGLAttrib *attrib_list)
 
          switch (attrib) {
          case EGL_DEVICE_EXT:
-            dev = _eglLookupDevice((void *)value);
-            if (!dev) {
+            if ((native_display && native_display != (void *)value) ||
+                (native_display != _eglLookupDevice(native_display))) {
                _eglError(EGL_BAD_DEVICE_EXT, "eglGetPlatformDisplay");
                return NULL;
             }
@@ -672,9 +671,10 @@ _eglGetSurfacelessDisplay(void *native_display, const EGLAttrib *attrib_list)
       }
    }
 
-   dpy = _eglFindDisplay(_EGL_PLATFORM_SURFACELESS, NULL, attrib_list);
+   dpy =
+      _eglFindDisplay(_EGL_PLATFORM_SURFACELESS, native_display, attrib_list);
    if (dpy) {
-      dpy->Device = dev;
+      dpy->Device = native_display;
    }
 
    return dpy;
