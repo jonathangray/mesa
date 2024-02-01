@@ -1231,14 +1231,6 @@ dri2_display_create(void)
 
    dri2_dpy->fd_render_gpu = -1;
    dri2_dpy->fd_display_gpu = -1;
-
-#ifdef HAVE_DRI3_MODIFIERS
-   dri2_dpy->dri3_major_version = -1;
-   dri2_dpy->dri3_minor_version = -1;
-   dri2_dpy->present_major_version = -1;
-   dri2_dpy->present_minor_version = -1;
-#endif
-
    return dri2_dpy;
 }
 
