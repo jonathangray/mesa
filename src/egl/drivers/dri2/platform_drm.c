@@ -544,20 +544,6 @@ static const struct dri2_egl_display_vtbl dri2_drm_display_vtbl = {
    .get_dri_drawable = dri2_surface_get_dri_drawable,
 };
 
-static int
-get_fd_render_gpu_drm(struct gbm_dri_device *gbm_dri, int fd_display_gpu)
-{
-   /* This doesn't make sense for the software case. */
-   assert(!gbm_dri->software);
-
-   /* Render-capable device, so just return the same fd. */
-   if (loader_is_device_render_capable(fd_display_gpu))
-      return fd_display_gpu;
-
-   /* Display-only device, so return a compatible render-only device. */
-   return gbm_dri->mesa->queryCompatibleRenderOnlyDeviceFd(fd_display_gpu);
-}
-
 EGLBoolean
 dri2_initialize_drm(_EGLDisplay *disp)
 {
@@ -584,7 +570,7 @@ dri2_initialize_drm(_EGLDisplay *disp)
             goto cleanup;
          }
 
-         dri2_dpy->fd_display_gpu =
+         dri2_dpy->fd_render_gpu =
             loader_open_device(drm->nodes[DRM_NODE_PRIMARY]);
       } else {
          _EGLDevice *dev_list = _eglGlobal.DeviceList;
@@ -598,9 +584,9 @@ dri2_initialize_drm(_EGLDisplay *disp)
             if (!(drm->available_nodes & (1 << DRM_NODE_PRIMARY)))
                goto next;
 
-            dri2_dpy->fd_display_gpu =
+            dri2_dpy->fd_render_gpu =
                loader_open_device(drm->nodes[DRM_NODE_PRIMARY]);
-            if (dri2_dpy->fd_display_gpu < 0)
+            if (dri2_dpy->fd_render_gpu < 0)
                goto next;
 
             break;
@@ -609,28 +595,21 @@ dri2_initialize_drm(_EGLDisplay *disp)
          }
       }
 
-      gbm = gbm_create_device(dri2_dpy->fd_display_gpu);
+      gbm = gbm_create_device(dri2_dpy->fd_render_gpu);
       if (gbm == NULL) {
          err = "DRI2: failed to create gbm device";
          goto cleanup;
       }
       dri2_dpy->own_device = true;
    } else {
-      dri2_dpy->fd_display_gpu = os_dupfd_cloexec(gbm_device_get_fd(gbm));
-      if (dri2_dpy->fd_display_gpu < 0) {
+      dri2_dpy->fd_render_gpu = os_dupfd_cloexec(gbm_device_get_fd(gbm));
+      if (dri2_dpy->fd_render_gpu < 0) {
          err = "DRI2: failed to fcntl() existing gbm device";
          goto cleanup;
       }
    }
+   dri2_dpy->fd_display_gpu = dri2_dpy->fd_render_gpu;
    dri2_dpy->gbm_dri = gbm_dri_device(gbm);
-   if (!dri2_dpy->gbm_dri->software) {
-      dri2_dpy->fd_render_gpu =
-         get_fd_render_gpu_drm(dri2_dpy->gbm_dri, dri2_dpy->fd_display_gpu);
-      if (dri2_dpy->fd_render_gpu < 0) {
-         err = "DRI2: failed to get compatible render device";
-         goto cleanup;
-      }
-   }
 
    if (strcmp(gbm_device_get_backend_name(gbm), "drm") != 0) {
       err = "DRI2: gbm device using incorrect/incompatible backend";
