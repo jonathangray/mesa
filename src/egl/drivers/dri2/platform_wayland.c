@@ -2161,6 +2161,7 @@ dri2_initialize_wayland_drm_extensions(struct dri2_egl_display *dri2_dpy)
 static EGLBoolean
 dri2_initialize_wayland_drm(_EGLDisplay *disp)
 {
+   _EGLDevice *dev;
    struct dri2_egl_display *dri2_dpy = dri2_display_create();
    if (!dri2_dpy)
       return EGL_FALSE;
@@ -2204,10 +2205,13 @@ dri2_initialize_wayland_drm(_EGLDisplay *disp)
    loader_get_user_preferred_fd(&dri2_dpy->fd_render_gpu,
                                 &dri2_dpy->fd_display_gpu);
 
-   if (!dri2_setup_device(disp, false)) {
-      _eglError(EGL_NOT_INITIALIZED, "DRI2: failed to setup EGLDevice");
+   dev = _eglFindDevice(dri2_dpy->fd_render_gpu, false);
+   if (!dev) {
+      _eglError(EGL_NOT_INITIALIZED, "DRI2: failed to find EGLDevice");
       goto cleanup;
    }
+
+   disp->Device = dev;
 
    if (dri2_dpy->fd_render_gpu != dri2_dpy->fd_display_gpu) {
       free(dri2_dpy->device_name);
@@ -2726,6 +2730,7 @@ static const __DRIextension *swrast_loader_extensions[] = {
 static EGLBoolean
 dri2_initialize_wayland_swrast(_EGLDisplay *disp)
 {
+   _EGLDevice *dev;
    struct dri2_egl_display *dri2_dpy = dri2_display_create();
    if (!dri2_dpy)
       return EGL_FALSE;
@@ -2771,10 +2776,13 @@ dri2_initialize_wayland_swrast(_EGLDisplay *disp)
    if (disp->Options.Zink)
       dri2_initialize_wayland_drm_extensions(dri2_dpy);
 
-   if (!dri2_setup_device(disp, true)) {
-      _eglError(EGL_NOT_INITIALIZED, "DRI2: failed to setup EGLDevice");
+   dev = _eglFindDevice(dri2_dpy->fd_render_gpu, true);
+   if (!dev) {
+      _eglError(EGL_NOT_INITIALIZED, "DRI2: failed to find EGLDevice");
       goto cleanup;
    }
+
+   disp->Device = dev;
 
    dri2_dpy->driver_name = strdup(disp->Options.Zink ? "zink" : "swrast");
    if (!dri2_load_driver_swrast(disp))

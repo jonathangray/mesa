@@ -30994,7 +30994,7 @@
         "description": "egl: extract EGLDevice setup in dedicated function",
         "nominated": true,
         "nomination_type": 4,
-        "resolution": 1,
+        "resolution": 0,
         "main_sha": null,
         "because_sha": null,
         "notes": null

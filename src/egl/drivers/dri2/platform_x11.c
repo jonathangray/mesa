@@ -1505,6 +1505,7 @@ dri2_x11_setup_swap_interval(_EGLDisplay *disp)
 static EGLBoolean
 dri2_initialize_x11_swrast(_EGLDisplay *disp)
 {
+   _EGLDevice *dev;
    struct dri2_egl_display *dri2_dpy = dri2_display_create();
    if (!dri2_dpy)
       return EGL_FALSE;
@@ -1512,10 +1513,13 @@ dri2_initialize_x11_swrast(_EGLDisplay *disp)
    if (!dri2_get_xcb_connection(disp, dri2_dpy))
       goto cleanup;
 
-   if (!dri2_setup_device(disp, true)) {
-      _eglError(EGL_NOT_INITIALIZED, "DRI2: failed to setup EGLDevice");
+   dev = _eglFindDevice(dri2_dpy->fd_render_gpu, true);
+   if (!dev) {
+      _eglError(EGL_NOT_INITIALIZED, "DRI2: failed to find EGLDevice");
       goto cleanup;
    }
+
+   disp->Device = dev;
 
    /*
     * Every hardware driver_name is set using strdup. Doing the same in
@@ -1591,6 +1595,7 @@ static const __DRIextension *dri3_image_loader_extensions[] = {
 static EGLBoolean
 dri2_initialize_x11_dri3(_EGLDisplay *disp)
 {
+   _EGLDevice *dev;
    struct dri2_egl_display *dri2_dpy = dri2_display_create();
 
    if (!dri2_dpy)
@@ -1602,10 +1607,13 @@ dri2_initialize_x11_dri3(_EGLDisplay *disp)
    if (!dri3_x11_connect(dri2_dpy))
       goto cleanup;
 
-   if (!dri2_setup_device(disp, false)) {
-      _eglError(EGL_NOT_INITIALIZED, "DRI2: failed to setup EGLDevice");
+   dev = _eglFindDevice(dri2_dpy->fd_render_gpu, false);
+   if (!dev) {
+      _eglError(EGL_NOT_INITIALIZED, "DRI2: failed to find EGLDevice");
       goto cleanup;
    }
+
+   disp->Device = dev;
 
    if (!dri2_load_driver_dri3(disp))
       goto cleanup;
@@ -1697,6 +1705,7 @@ static const __DRIextension *dri2_loader_extensions[] = {
 static EGLBoolean
 dri2_initialize_x11_dri2(_EGLDisplay *disp)
 {
+   _EGLDevice *dev;
    struct dri2_egl_display *dri2_dpy = dri2_display_create();
    if (!dri2_dpy)
       return EGL_FALSE;
@@ -1707,10 +1716,13 @@ dri2_initialize_x11_dri2(_EGLDisplay *disp)
    if (!dri2_x11_connect(dri2_dpy))
       goto cleanup;
 
-   if (!dri2_setup_device(disp, false)) {
-      _eglError(EGL_NOT_INITIALIZED, "DRI2: failed to setup EGLDevice");
+   dev = _eglFindDevice(dri2_dpy->fd_render_gpu, false);
+   if (!dev) {
+      _eglError(EGL_NOT_INITIALIZED, "DRI2: failed to find EGLDevice");
       goto cleanup;
    }
+
+   disp->Device = dev;
 
    if (!dri2_load_driver(disp))
       goto cleanup;
