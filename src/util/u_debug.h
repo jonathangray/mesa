@@ -412,6 +412,8 @@ __normal_user(void)
 #ifndef HAVE_SECURE_GETENV
 static inline char *secure_getenv(const char *name)
 {
+   if (issetugid())
+      return NULL;
    return getenv(name);
 }
 #endif
