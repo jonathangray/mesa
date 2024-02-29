@@ -35,7 +35,7 @@ xe_intel_gem.c:
 
 .include "../Makefile.inc"
 
-CFLAGS+=	${C_VIS_ARGS} ${NO_OVERRIDE_INIT_ARGS}
+CFLAGS+=	${C_VIS_ARGS} ${NO_OVERRIDE_INIT_ARGS} ${C_SSE2_ARGS}
 CPPFLAGS+=	-I${MESA_SRC}/src/intel \
 		-I${MESA_SRC}/src/intel/common \
 		-I${MESA_SRC}/generated/src \
