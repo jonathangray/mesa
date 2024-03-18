@@ -96,6 +96,10 @@ lp_free_objcache(void *objcache);
 
 void
 lp_set_module_stack_alignment_override(LLVMModuleRef M, unsigned align);
+
+void
+lp_set_module_branch_target_enforcement(LLVMModuleRef M);
+
 #ifdef __cplusplus
 
 void
