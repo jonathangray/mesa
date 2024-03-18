@@ -635,6 +635,13 @@ lp_set_module_stack_alignment_override(LLVMModuleRef MRef, unsigned align)
 #endif
 }
 
+extern "C" void
+lp_set_module_branch_target_enforcement(LLVMModuleRef MRef)
+{
+   llvm::Module *M = llvm::unwrap(MRef);
+   M->addModuleFlag(llvm::Module::Override, "branch-target-enforcement", 1);
+}
+
 using namespace llvm;
 
 class GallivmRunAtExitForStaticDestructors : public SDNode
