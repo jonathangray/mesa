@@ -401,6 +401,16 @@ gallivm_compile_module(struct gallivm_state *gallivm)
                    "[-mattr=<-mattr option(s)>]");
    }
 
+#if DETECT_ARCH_AARCH64
+   LLVMValueRef func = LLVMGetFirstFunction(gallivm->module);
+
+   while (func) {
+      LLVMAddTargetDependentFunctionAttr(func, "branch-target-enforcement", "true");
+      LLVMAddTargetDependentFunctionAttr(func, "sign-return-address", "non-leaf");
+      func = LLVMGetNextFunction(func);
+   }
+#endif
+
    lp_passmgr_run(gallivm->passmgr,
                   gallivm->module,
                   LLVMGetExecutionEngineTargetMachine(gallivm->engine),
